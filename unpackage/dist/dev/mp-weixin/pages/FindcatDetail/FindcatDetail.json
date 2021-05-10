@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "cl-button": "/cl-uni/components/cl-button/cl-button"
-  }
-}

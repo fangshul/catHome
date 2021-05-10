@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "寻猫",
-  "usingComponents": {
-    "selector": "/components/selector/selector"
-  }
-}

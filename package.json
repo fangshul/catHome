@@ -12,6 +12,7 @@
     ],
     "dependencies": {
         "cl-uni": "^1.8.5",
+        "copy-webpack-plugin": "^8.1.1",
         "lodash": "^4.17.21",
         "mpvue-picker": "^2.1.6"
     }

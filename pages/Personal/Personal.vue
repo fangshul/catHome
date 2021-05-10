@@ -1,13 +1,16 @@
 <template>
 	<view class="center">
 		<cl-dialog 
-			title="标题"  
+			title="提示"  
 			:visible.sync="visible" 
-			closeOnClickModal="false"
+			:closeOnClickModal="closemode"
 			
 			>
-			<!-- <button @click="getUserProfile"> 获取头像昵称 </button> -->
-			<text>云想衣裳花想容，春风拂槛露华浓。若非群玉山头见，会向瑶台月下逢。</text>
+			<text>猫咪避风港需要获取您的手机号码，完善您的信息，以完成登录</text>
+			<view class="loginbox">
+				<button @click="getUserProfile">  登录</button>
+			</view>
+			<!-- <text>云想衣裳花想容，春风拂槛露华浓。若非群玉山头见，会向瑶台月下逢。</text> -->
 		</cl-dialog>
 		
 		
@@ -24,7 +27,7 @@
 					<view class="profily_header" :style="{backgroundImage:'url('+headImg+')'}">
 
 					</view>
-					<text>昵称</text>
+					<text>{{ userName }}</text>
 					<!-- <image src="../../static/fumou-center-template/setting.png" mode=""></image> -->
 				</view>
 				<view class="order_status">
@@ -85,7 +88,9 @@
 	export default {
 		data() {
 			return {
+				userName:'昵称',
 				visible: true,
+				closemode: false,
 				headImg:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn11%2F600%2Fw700h700%2F20180424%2F514b-fzqvvsa3694420.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622959077&t=b701606d5bdedcef64ca889f3d23acd0',
 				status: [{
 						key: 1,
@@ -150,11 +155,11 @@
 			};
 		},
 		mounted() {
-			wx.getSetting({
-				success: res => {
-					console.log('set',res)
-				}
-			})
+			if (this.$haveInfo) {
+				this.visible = false
+			} else {
+				this.visible = true
+			}
 		},
 		methods: {
 			getUserProfile(e) {
@@ -164,11 +169,21 @@
 			      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
 			      success: (res) => {
 					  console.log(res)
+					  this.visible = false
+					  // console.log(this.$haveInfo)
+					  uni.setStorageSync('userInfo',res)
+					  this.$haveInfo = true
+					  this.headImg = res.userInfo.avatarUrl
+					  this.userName = res.userInfo.nickName
 			        // this.setData({
 			        //   userInfo: res.userInfo,
 			        //   hasUserInfo: true
 			        // })
-			      }
+			      },
+				  fail: err =>{
+					  console.log(err)
+					   this.visible = false
+				  }
 			    })
 			  },
 		},
@@ -179,6 +194,18 @@
 </script>
 
 <style lang="scss">
+	.loginbox{
+		display: flex;
+		justify-content: center;
+		button{
+			background-color: $system-color;
+			color: #fff;
+			width: 60%;
+			padding: 20rpx;
+			margin: 20rpx;
+			border-radius: 10rpx;
+		}
+	}
 	button{
 	background-color: rgba(255,255,255,0);
 	// background-color:#fff; //可根据自己的背景颜色自行设置

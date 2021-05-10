@@ -7,7 +7,21 @@ import lodash from 'lodash'
 import store from './store/index.js'
 Vue.prototype.$store = store
 Vue.prototype.$lodash = lodash
+
+
 Vue.config.productionTip = false
+
+var haveInfo
+var info = uni.getStorageSync('userInfo')
+if (info == null || info == '' || info == undefined) {
+	haveInfo = false
+} else {
+	haveInfo = true
+}
+
+Vue.prototype.$haveInfo = haveInfo
+
+
 
 App.mpType = 'app'
 
