@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "我发布的寻猫",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "uni-list": "/components/uni-list/uni-list",
+    "uni-list-chat": "/components/uni-list-chat/uni-list-chat",
+    "cl-icon": "/cl-uni/components/cl-icon/cl-icon",
+    "cl-select": "/cl-uni/components/cl-select/cl-select",
+    "uni-list-item": "/components/uni-list-item/uni-list-item"
+  }
+}

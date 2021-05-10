@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "我发布的讨论",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "uni-list": "/components/uni-list/uni-list",
+    "uni-list-chat": "/components/uni-list-chat/uni-list-chat",
+    "cl-icon": "/cl-uni/components/cl-icon/cl-icon"
+  }
+}
