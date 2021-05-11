@@ -108,6 +108,10 @@ page {
   width: 120rpx;
   background-size: 100%;
 }
+.base .nickname {
+  margin-left: 20px;
+  font-size: 30rpx;
+}
 .base text {
   margin-left: 20px;
   font-size: 30rpx;

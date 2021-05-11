@@ -28,5 +28,5 @@
       "list": []
     }
   },
-  "cloudfunctionRoot": ""
+  "cloudfunctionRoot": "cloudfunctions/"
 }

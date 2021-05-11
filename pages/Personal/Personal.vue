@@ -8,6 +8,12 @@
 			>
 			<text>猫咪避风港需要获取您的手机号码，完善您的信息，以完成登录</text>
 			<view class="loginbox">
+				<!-- <button 
+					class="button" 
+					hover-class="button-hover" 
+					open-type="getUserInfo" 
+					bindgetuserinfo="getuserInfo"
+				    >点击授权</button> -->
 				<button @click="getUserProfile">  登录</button>
 			</view>
 			<!-- <text>云想衣裳花想容，春风拂槛露华浓。若非群玉山头见，会向瑶台月下逢。</text> -->
@@ -24,10 +30,16 @@
 		<view class="center_box_bg">
 			<view class="profily">
 				<view class="base">
+					<!-- <open-data type="userAvatarUrl" class="profily_header"></open-data> -->
 					<view class="profily_header" :style="{backgroundImage:'url('+headImg+')'}">
 
 					</view>
-					<text>{{ userName }}</text>
+					<!-- <view class="nickname">
+						<open-data type="userNickName"></open-data>
+					</view> -->
+					<text>
+						{{ userName }}
+					</text>
 					<!-- <image src="../../static/fumou-center-template/setting.png" mode=""></image> -->
 				</view>
 				<view class="order_status">
@@ -85,6 +97,8 @@
 </template>
 
 <script>
+	const db = wx.cloud.database()
+	
 	export default {
 		data() {
 			return {
@@ -110,12 +124,7 @@
 						url: '../../static/images/personal/message.png',
 						nexturl: '../myForum/myForum'
 					}
-					// ,
-					// {
-					// 	key: 4,
-					// 	name: '全部订单',
-					// 	url: '../../static/fumou-center-template/4.png'
-					// }
+					
 				],
 				menus: [
 					{
@@ -124,26 +133,6 @@
 						key: 1,
 						nexturl: '../Message/Message'
 					},
-					// {
-					// 	name: '地址管理',
-					// 	icon: '../../static/fumou-center-template/6.png',
-					// 	key: 2,
-					// },
-					// {
-					// 	name: '尺码对照表',
-					// 	icon: '../../static/fumou-center-template/7.png',
-					// 	key: 3,
-					// },
-					// {
-					// 	name: '帮助中心',
-					// 	icon: '../../static/fumou-center-template/8.png',
-					// 	key: 4,
-					// },
-					// {
-					// 	name: '意见反馈',
-					// 	icon: '../../static/images/personal/feedback.png',
-					// 	key: 5,
-					// },
 					{
 						name: '关于我们',
 						icon: '../../static/images/personal/about.png',
@@ -155,14 +144,39 @@
 			};
 		},
 		mounted() {
-			if (this.$haveInfo) {
-				this.visible = false
-			} else {
-				this.visible = true
-			}
+			// if (this.$haveInfo) {
+			// 	this.visible = false
+			// } else {
+			// 	this.visible = true
+			// }
 		},
 		methods: {
-			getUserProfile(e) {
+			getUserProfile(eme) {
+				// wx.cloud.callFunction({
+				// 	name: 'getopenid',
+				// 	complete: res => {
+				// 		const openid = res.result.openid
+				// 		console.log(openid)
+				// 		db.collection('user').where({
+				// 			_openid: openid
+				// 		}).get().then(res => {
+				// 			if (res.data.length == 0) {
+				// 				console.log("授权登录成功")
+				// 				console.log(eme)
+				// 				// db.collection('user').add({
+				// 				// 	data: {
+				// 				// 		_openid: openid,
+				// 				// 		nikename: e.detail.userInfo.nickName,
+				// 				// 		avatarUrl: e.detail.userInfo.avatarUrl
+				// 				// 	}
+				// 				// })
+				// 			} else {
+				// 				console.log("已经登录过")
+				// 			}
+				// 			console.log("db",res)
+				// 		})
+				// 	}
+				// })
 			    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
 			    // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
 			    wx.getUserProfile({
@@ -175,6 +189,31 @@
 					  this.$haveInfo = true
 					  this.headImg = res.userInfo.avatarUrl
 					  this.userName = res.userInfo.nickName
+					  
+					  wx.cloud.callFunction({
+						  name: 'getopenid',
+						  success: res => {
+							  const openid = res.result.openid
+							  db.collection('user').where({
+								  _openid:openid
+							  }).get({
+								  success: res => {
+									  if (res.data.length == 0) {
+										  db.collection('user').add({
+											  data:{
+												  name:  res.userInfo.nickName
+											  },
+											  success: res =>{
+												  console.log(res)
+											  }
+										  })
+									  }
+									  console.log(res)
+								  }
+							  })
+							  // console.log(a)
+						  }
+					  })
 			        // this.setData({
 			        //   userInfo: res.userInfo,
 			        //   hasUserInfo: true
@@ -280,7 +319,14 @@
 			// background-image: url('../../static/fumou-center-template/header.jpg');
 			background-size: 100%;
 		}
-
+		// openData {
+		// 	margin-left: 20px;
+		// 	font-size: 30upx;
+		// }
+		.nickname{
+			margin-left: 20px;
+			font-size: 30upx;
+		}
 		text {
 			margin-left: 20px;
 			font-size: 30upx;

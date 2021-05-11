@@ -239,7 +239,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var _default =
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var db = wx.cloud.database();var _default =
+
 {
   data: function data() {
     return {
@@ -263,15 +277,10 @@ var _default =
         key: 3,
         name: '我的讨论',
         url: '../../static/images/personal/message.png',
-        nexturl: '../myForum/myForum' }
+        nexturl: '../myForum/myForum' }],
 
-      // ,
-      // {
-      // 	key: 4,
-      // 	name: '全部订单',
-      // 	url: '../../static/fumou-center-template/4.png'
-      // }
-      ],
+
+
       menus: [
       {
         name: '消息',
@@ -279,26 +288,6 @@ var _default =
         key: 1,
         nexturl: '../Message/Message' },
 
-      // {
-      // 	name: '地址管理',
-      // 	icon: '../../static/fumou-center-template/6.png',
-      // 	key: 2,
-      // },
-      // {
-      // 	name: '尺码对照表',
-      // 	icon: '../../static/fumou-center-template/7.png',
-      // 	key: 3,
-      // },
-      // {
-      // 	name: '帮助中心',
-      // 	icon: '../../static/fumou-center-template/8.png',
-      // 	key: 4,
-      // },
-      // {
-      // 	name: '意见反馈',
-      // 	icon: '../../static/images/personal/feedback.png',
-      // 	key: 5,
-      // },
       {
         name: '关于我们',
         icon: '../../static/images/personal/about.png',
@@ -310,14 +299,39 @@ var _default =
 
   },
   mounted: function mounted() {
-    if (this.$haveInfo) {
-      this.visible = false;
-    } else {
-      this.visible = true;
-    }
+    // if (this.$haveInfo) {
+    // 	this.visible = false
+    // } else {
+    // 	this.visible = true
+    // }
   },
   methods: {
-    getUserProfile: function getUserProfile(e) {var _this = this;
+    getUserProfile: function getUserProfile(eme) {var _this = this;
+      // wx.cloud.callFunction({
+      // 	name: 'getopenid',
+      // 	complete: res => {
+      // 		const openid = res.result.openid
+      // 		console.log(openid)
+      // 		db.collection('user').where({
+      // 			_openid: openid
+      // 		}).get().then(res => {
+      // 			if (res.data.length == 0) {
+      // 				console.log("授权登录成功")
+      // 				console.log(eme)
+      // 				// db.collection('user').add({
+      // 				// 	data: {
+      // 				// 		_openid: openid,
+      // 				// 		nikename: e.detail.userInfo.nickName,
+      // 				// 		avatarUrl: e.detail.userInfo.avatarUrl
+      // 				// 	}
+      // 				// })
+      // 			} else {
+      // 				console.log("已经登录过")
+      // 			}
+      // 			console.log("db",res)
+      // 		})
+      // 	}
+      // })
       // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
       // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
       wx.getUserProfile({
@@ -330,6 +344,31 @@ var _default =
           _this.$haveInfo = true;
           _this.headImg = res.userInfo.avatarUrl;
           _this.userName = res.userInfo.nickName;
+
+          wx.cloud.callFunction({
+            name: 'getopenid',
+            success: function success(res) {
+              var openid = res.result.openid;
+              db.collection('user').where({
+                _openid: openid }).
+              get({
+                success: function success(res) {
+                  if (res.data.length == 0) {
+                    db.collection('user').add({
+                      data: {
+                        name: res.userInfo.nickName },
+
+                      success: function success(res) {
+                        console.log(res);
+                      } });
+
+                  }
+                  console.log(res);
+                } });
+
+              // console.log(a)
+            } });
+
           // this.setData({
           //   userInfo: res.userInfo,
           //   hasUserInfo: true

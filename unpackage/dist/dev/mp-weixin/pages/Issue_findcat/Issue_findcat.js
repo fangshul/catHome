@@ -411,6 +411,8 @@ var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/
       // console.log(data)
     },
     getData: function getData() {
+      var cat = this.$refs.catinfo.data;
+      var master = this.$refs.peopleinfo.data;
       // 没有上传图片
       if (this.imgs.length == 0) {
 
@@ -422,6 +424,65 @@ var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/
           // duration: 100000
           // type: 'warning'
         });
+      } else if (this.cattype == "") {
+        this.$refs["toast"].open({
+          type: "warning",
+          message: "请选择猫咪种类",
+          position: "middle",
+          icon: "warning"
+          // duration: 100000
+          // type: 'warning'
+        });
+      } else if (cat.name == "" || cat.age == "" || cat.sorry == "") {
+        // 没有猫咪信息
+        this.$refs["toast"].open({
+          type: "warning",
+          message: "请填写猫咪的信息",
+          position: "middle",
+          icon: "warning"
+          // duration: 100000
+          // type: 'warning'
+        });
+
+      } else if (this.detailLocation =  false || this.value2 == undefined) {
+        this.$refs["toast"].open({
+          type: "warning",
+          message: "请填写位置信息",
+          position: "middle",
+          icon: "warning"
+          // duration: 100000
+          // type: 'warning'
+        });
+      } else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
+        this.$refs["toast"].open({
+          type: "warning",
+          message: "请填写送养人信息",
+          position: "middle",
+          icon: "warning"
+          // duration: 100000
+          // type: 'warning'
+        });
+      } else {
+        findcat.add({
+          data: {
+            imgList: this.imgs,
+            date: new Date(),
+            lostLocation: this.value2,
+            lostdetailLocation: this.detailLocation,
+            lostDate: this.lostdate,
+            lostTime: this.losttime,
+            masterName: master.peoplename,
+            masterPhone: master.peoplephone,
+            masterWechat: master.peoplewechat,
+            disphone: master.disphone,
+            petName: cat.name,
+            petAge: cat.age,
+            petType: this.cattype,
+            story: cat.sorry } }).
+
+        then(function (res) {
+          console.log(res);
+        });
       }
 
       console.log(this.imgs);
@@ -432,6 +493,7 @@ var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/
       console.log(this.losttime);
       console.log(this.detailLocation);
       console.log(this.value2);
+
       // console.log(this.catInfo)
       // console.log(this.formPeople)
       // this.handleSubmit()
