@@ -1,0 +1,31 @@
+.home .top-barrage.data-v-a0e9edec {
+  width: 100%;
+  height: 320rpx;
+  overflow: hidden;
+}
+.home .card-bottom.data-v-a0e9edec {
+  width: 100%;
+}
+.home .card-bottom .top-tab.data-v-a0e9edec {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  height: 120rpx;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #ffffff;
+}
+.home .card-bottom .top-tab .tab-item.data-v-a0e9edec {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  color: #999;
+  border-bottom: 4rpx solid #ececec;
+}
+.home .card-bottom .top-tab .active.data-v-a0e9edec {
+  color: var(--mainColor);
+  border-bottom: 4rpx solid var(--mainColor);
+}
+
