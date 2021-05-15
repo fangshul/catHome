@@ -7,6 +7,7 @@
     "cl-filter-item": "/cl-uni/components/cl-filter-item/cl-filter-item",
     "cl-textarea": "/cl-uni/components/cl-textarea/cl-textarea",
     "cl-toast": "/cl-uni/components/cl-toast/cl-toast",
+    "cl-loading-mask": "/cl-uni/components/cl-loading-mask/cl-loading-mask",
     "v-form": "/components/venus-form/v-form",
     "lb-picker": "/components/lb-picker/index"
   }

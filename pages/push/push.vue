@@ -17,18 +17,32 @@
 				</view>
 			</view>
 		</view>
-		<view class="bottom-btn flex-center">
+		<view class="bottom-btn flex-center" @click="push">
 			<view class="btn">发布</view>
 		</view>
+		<cl-toast ref="toast"></cl-toast>
+		<cl-loading-mask
+			v-if="ifloading"  
+			:fullscreen="true" 
+			:loading="true" 
+			:text="loadingText">
+			
+		</cl-loading-mask>
 	</view>
 </template>
 
 <script>
+	const db = wx.cloud.database()
+	const forum = db.collection('forum')
+	
+	import randomName from '../../static/randomName.js'
 	export default {
 		data() {
 			return {
 				imgList: [],
-				content: ''
+				content: '',
+				ifloading: false,
+				loadingText: ''
 			};
 		},
 		methods: {
@@ -61,6 +75,71 @@
 					urls: that.imgList
 				})
 			},
+			async push () {
+				var imgfildid = []
+				console.log(this.imgList)
+				console.log(this.content)
+				for (var i=0; i<this.imgList.length; i++) {
+					var imgurl = await wx.cloud.uploadFile({
+					  cloudPath: 'forum/'+randomName()+'.png', // 上传至云端的路径
+					  filePath: this.imgList[i], // 小程序临时文件路径
+					 
+					})
+					imgfildid.push(imgurl.fileID)
+					// console.log(imgurl)
+				}
+				
+				if (this.content === '') {
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "内容不能为空",
+						position: "middle",
+						icon:"warning",
+						
+					})
+				} else {
+					this.ifloading = true
+					this.loadingText = "发布中"
+					forum.add({
+						data:{
+							content: this.content,
+							viewed: 0,
+							imgList: imgfildid,
+							date: new Date(),
+							like: 0,
+							comment : []
+							
+						},
+						success: res => {
+							this.ifloading = false
+							
+							this.$refs["toast"].open({
+								type: "success",
+								message: "发布成功",
+								position: "middle",
+								icon:"success",
+								
+							})
+							uni.reLaunch({
+								url: '../Forum/Forum'
+							})
+							
+							
+						},
+						fail: err => {
+							this.ifloading = false
+							this.$refs["toast"].open({
+								type: "error",
+								message: "发布失败",
+								position: "middle",
+								icon:"error",
+								
+							})
+							console.log(err)
+						}
+					})
+				}
+			}
 		}
 	}
 </script>

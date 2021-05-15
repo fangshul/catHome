@@ -10,8 +10,7 @@
 					<view class="profily_header" :style="{backgroundImage:'url('+headImg+')'}">
 
 					</view>
-					<text>昵称</text>
-					<!-- <image src="../../static/fumou-center-template/setting.png" mode=""></image> -->
+					<text>{{ nickname }}</text>
 				</view>
 				<view class="order_status">
 					<navigator 
@@ -21,38 +20,14 @@
 						<image class="icon" :src="item.url" mode="aspectFill"></image>
 						<text>{{item.name}}</text>
 					</navigator>
-					<!-- <view class="status" v-for="item in status" :key="index">
-						<image class="icon" :src="item.url" mode="aspectFill"></image>
-						<text>{{item.name}}</text>
-					</view> -->
+					
 				</view>
 				
 			</view>
 			<view class="baiban">
 
 			</view>
-			<!-- <view class="center_menu">
-				
-				<view   class="menu_item" >
-					<image src="../../static/images/personal/feedback.png" mode="aspectFill"></image>
-					<button 
-						
-						open-type='feedback' 
-						class="feedback">
-						意见反馈
-					</button>
-				</view>
-				<navigator
-					
-					class="menu_item"
-					v-for="item in menus"
-					:key="index"
-					:url="item.nexturl">
-					<image :src="item.icon" mode="aspectFill"></image>
-					<text>{{item.name}}</text>
-				</navigator>
 			
-			</view> -->
 			<view>
 				<view class="person_title">他的领养</view>
 				<view class="cu-card article" :class="isCard?'no-card':''">
@@ -92,9 +67,11 @@
 </template>
 
 <script>
+	const db = wx.cloud.database()
 	export default {
 		data() {
 			return {
+				nickname: "",
 				headImg:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn11%2F600%2Fw700h700%2F20180424%2F514b-fzqvvsa3694420.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622959077&t=b701606d5bdedcef64ca889f3d23acd0',
 				status: [{
 						key: 1,
@@ -114,12 +91,7 @@
 						url: '../../static/images/personal/message.png',
 						nexturl: '../myForum/myForum'
 					}
-					// ,
-					// {
-					// 	key: 4,
-					// 	name: '全部订单',
-					// 	url: '../../static/fumou-center-template/4.png'
-					// }
+					
 				],
 				menus: [
 					{
@@ -128,26 +100,7 @@
 						key: 1,
 						nexturl: '../Message/Message'
 					},
-					// {
-					// 	name: '地址管理',
-					// 	icon: '../../static/fumou-center-template/6.png',
-					// 	key: 2,
-					// },
-					// {
-					// 	name: '尺码对照表',
-					// 	icon: '../../static/fumou-center-template/7.png',
-					// 	key: 3,
-					// },
-					// {
-					// 	name: '帮助中心',
-					// 	icon: '../../static/fumou-center-template/8.png',
-					// 	key: 4,
-					// },
-					// {
-					// 	name: '意见反馈',
-					// 	icon: '../../static/images/personal/feedback.png',
-					// 	key: 5,
-					// },
+					
 					{
 						name: '关于我们',
 						icon: '../../static/images/personal/about.png',
@@ -160,6 +113,18 @@
 		},
 		methods: {
 			
+		},
+		onLoad (option) {
+			console.log(option)
+			db.collection('user').where({
+			  _openid: option.id
+			  
+			}).get({}).then(res => {
+				console.log(res)
+				this.headImg = res.data[0].avatarUrl
+				this.nickname = res.data[0].name
+				
+			})
 		},
 		computed: {
 

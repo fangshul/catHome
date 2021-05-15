@@ -36,15 +36,15 @@
 					label="猫咪品种"
 					:options="catlist"
 					type="dropdown"
-					prop="rank"
+					prop="type"
 				></cl-filter-item>
 		
 				<cl-filter-item
-					v-model="str"
+					v-model="sex"
 					label="猫咪性别"
 					:options="catsex"
 					type="dropdown"
-					prop="rank"
+					prop="sex"
 				></cl-filter-item>
 				
 			</cl-filter-bar>
@@ -134,6 +134,7 @@
 				],
 				arr: [1],
 				str: "",
+				sex: "",
 				sort: "desc"
 				
 			};
@@ -174,6 +175,7 @@
 			    if (name && label) {
 			      this[name] = label
 			    }
+				this.$emit('changlocation',e.value)
 			  }
 			},
 			handleCancel (e) {
@@ -181,6 +183,11 @@
 			},
 			handleTap (picker) {
 			  this.$refs[picker].show()
+			  
+			},
+			onChange(e) {
+				console.log(e)
+				this.$emit("changcatinfo",e)
 			}
 		}
 	}

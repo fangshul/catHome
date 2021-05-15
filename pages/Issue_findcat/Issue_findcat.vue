@@ -59,7 +59,10 @@
 			</lb-picker>
 			<view class="cityTitle">详细地址</view>
 			<view class="citySelect">
-				<cl-textarea class="citySelect" v-model="detailLocation" placeholder="请输入详细地址"></cl-textarea>
+				<cl-textarea 
+					class="citySelect" 
+					v-model="detailLocation" 
+					placeholder="请输入详细地址"></cl-textarea>
 			</view>
 		</view>
 		<view class="peopelInfo">
@@ -77,11 +80,18 @@
 			<button @click="getData" class="push">发布</button>
 		</view>
 		 <cl-toast ref="toast"></cl-toast>
+		<cl-loading-mask 
+			v-if="ifloading"  
+			:fullscreen="true" 
+			:loading="true" 
+			:text="loadingText">
+			
+		</cl-loading-mask>
 	</view>
 </template>
 
 <script>
-	
+	import randomName from '../../static/randomName.js'
 	import areaData from '../../static/area-data-min.js'
 	import LbPicker from '@/components/lb-picker'
 	import VForm from '@/components/venus-form/v-form.vue'
@@ -90,10 +100,13 @@
 	
 	const db = wx.cloud.database()
 	const findcat = db.collection('findCat')
-	
+	// const _this = this
 	export default {
 		data() {
 			return {
+				loadingText: '',
+				ifloading: false,
+				value2: '',
 				nowdate: '',
 				nowtime:'',
 				cattype:'',
@@ -165,12 +178,7 @@
 					name: '', // 注意:这里的对象key要跟表单定义对象中的name属性值一一对应
 					age: '',
 					sex: 1,
-					// cost: 1,
-					// vaccine: false,
-					// sterilization: false,
-					// expellingParasite:false,
 					sorry:'',
-					// condition:[]
 				},
 				peopleInfo: {
 					peoplename: '',
@@ -218,7 +226,8 @@
 						}
 					]
 				},
-				imgs:[]
+				imgs:[],
+				tmpimgdata: []
 			}
 		},
 		components: {
@@ -228,26 +237,76 @@
 		
 		},
 		mounted() {
-			var date = new Date()
 			
-			
-			console.log(date)
-			this.nowdate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-			this.nowtime = `${date.getHours()}:${date.getMinutes()}`
+			this.getnowTime()
 			this.lostdate = this.nowdate
 			this.losttime = this.nowtime
 			this.catlist = catdata.splice(1)
 		},
 		methods: {
-			updateImg(data) {
-				this.imgs = data.allImages
-				// console.log(data)
+			getnowTime () {
+				var date = new Date()
+				
+				
+				// console.log(date)
+				this.nowdate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+				this.nowtime = `${date.getHours()}:${date.getMinutes()}`
 			},
+			
+			updateImg(data) {
+				// console.log('/findCat/'+randomName()+'.png')
+				// var tmpimgdata = []
+				this.ifloading = true
+				this.loadingText = "上传图片中..."
+				console.log(data.currentImages.length)
+				for (var i=0;i<data.currentImages.length;i++) {
+					console.log(i)
+					if (i == data.currentImages.length-1) {
+						wx.cloud.uploadFile({
+						  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+						  filePath: data.currentImages[i], // 小程序临时文件路径
+						 
+						})
+						.then(res => {
+							
+							this.tmpimgdata.push(res.fileID)
+							this.ifloading = false
+							
+						})
+					} else {
+						wx.cloud.uploadFile({
+						  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+						  filePath: data.currentImages[i], // 小程序临时文件路径
+						 
+						})
+						.then(res => {
+							this.tmpimgdata.push(res.fileID)
+						})
+					}
+					
+				}
+				// this.ifloading = true
+				
+				// this.imgs = data.allImages
+				
+				
+			},
+			
 			getData() {
+				// this.a()
+				// console.log(this.imgs)
+				// console.log(this.$refs.catinfo.data)
+				// console.log(this.$refs.peopleinfo.data)
+				// console.log(this.cattype)
+				// console.log(this.lostdate)
+				// console.log(this.losttime)
+				// console.log('locationde',this.detailLocation)
+				// console.log(this.value2)
+				
 				let cat = this.$refs.catinfo.data
 				let master = this.$refs.peopleinfo.data
 				// 没有上传图片
-				if (this.imgs.length==0) {
+				if (this.tmpimgdata.length==0) {
 					
 					this.$refs["toast"].open({
 						type: "warning",
@@ -258,13 +317,13 @@
 						// type: 'warning'
 					})
 				} else if (this.cattype == "") {
+					// 没有猫咪种类
 					this.$refs["toast"].open({
 						type: "warning",
 						message: "请选择猫咪种类",
 						position: "middle",
 						icon:"warning",
-						// duration: 100000
-						// type: 'warning'
+					
 					})
 				} else if (cat.name == "" || cat.age == "" || cat.sorry == "") {
 					// 没有猫咪信息
@@ -273,32 +332,32 @@
 						message: "请填写猫咪的信息",
 						position: "middle",
 						icon:"warning",
-						// duration: 100000
-						// type: 'warning'
+						
 					})
 					
-				} else if (this.detailLocation = "" || this.value2 == undefined) {
+				} else if (this.detailLocation = "" || this.value2 == undefined || this.value2 == "") {
+					// 没有位置
 					this.$refs["toast"].open({
 						type: "warning",
 						message: "请填写位置信息",
 						position: "middle",
 						icon:"warning",
-						// duration: 100000
-						// type: 'warning'
+						
 					})
 				} else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
+					// 没有送养人信息
 					this.$refs["toast"].open({
 						type: "warning",
 						message: "请填写送养人信息",
 						position: "middle",
 						icon:"warning",
-						// duration: 100000
-						// type: 'warning'
+						
 					})
 				} else {
+					this.ifloading = true
 					findcat.add({
 						data:{
-							imgList:this.imgs,
+							imgList:this.tmpimgdata,
 							date: new Date(),
 							lostLocation: this.value2,
 							lostdetailLocation: this.detailLocation,
@@ -311,25 +370,42 @@
 							petName: cat.name,
 							petAge: cat.age,
 							petType: this.cattype,
-							story: cat.sorry
+							petSex: cat.sex,
+							story: cat.sorry,
+							iffind: false
+						},
+						success: res => {
+							this.ifloading = false
+							
+							this.$refs["toast"].open({
+								type: "success",
+								message: "发布成功",
+								position: "middle",
+								icon:"success",
+								
+							})
+							uni.reLaunch({
+								url: '../FindCat/FindCat'
+							})
+							
+							
+						},
+						fail: err => {
+							this.ifloading = false
+							this.$refs["toast"].open({
+								type: "error",
+								message: "发布失败",
+								position: "middle",
+								icon:"error",
+								
+							})
+							console.log(err)
 						}
-					}).then(res => {
-						console.log(res)
 					})
 				}
 				
-				console.log(this.imgs)
-				console.log(this.$refs.catinfo.data)
-				console.log(this.$refs.peopleinfo.data)
-				console.log(this.cattype)
-				console.log(this.lostdate)
-				console.log(this.losttime)
-				console.log(this.detailLocation)
-				console.log(this.value2)
 				
-				// console.log(this.catInfo)
-				// console.log(this.formPeople)
-				// this.handleSubmit()
+			
 			},
 			sexChange(e) {
 				// console.log( e.detail.value)

@@ -78,6 +78,7 @@
 					that.item.likeNum++;
 				}
 				that.item.isLike = !that.item.isLike;
+				this.$emit('like',{id: id,likenum: likeNum,islike: isLike})
 			},
 			toOthers() {
 				uni.navigateTo({

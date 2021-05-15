@@ -19,7 +19,7 @@
 		</view>
 		<view class="content-box" v-html="detail.title"></view>
 		<view class="bottom-time">
-			<text>2020-07-01</text>
+			<text>{{ detail.time }}</text>
 		</view>
 		<view class="comment-wrap">
 			<view class="scroll-wrap">
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+	const db = wx.cloud.database()
+	const forum = db.collection('forum')
 	var that;
 	export default {
 		data() {
@@ -100,9 +102,14 @@
 			};
 		},
 		onLoad(options) {
+			console.log(options)
 			that = this
 			if (options && options.id) {
+				
 				that.detailId = options.id
+				
+				that.getdetail()
+				
 				let list = that.$store.state.diary.cardList
 				list.forEach(item => {
 					if (options.id == item.id) {
@@ -121,6 +128,44 @@
 		},
 
 		methods: {
+			async getdetail () {
+				var forumitem = await forum.doc(this.detailId).get({
+					
+				})
+				
+				let item = {}
+				
+				// item.nickName = 
+				// item.avatarUrl = 
+				item.title = forumitem.data.content
+				item.time  = `${ forumitem.data.date.getMonth() + 1}-${forumitem.data.date.getDate()}`
+				
+				var userinfo = await db.collection('user').where({
+									  _openid: forumitem.data._openid
+								  }).get()
+								  
+				item.avatarUrl = userinfo.data[0].avatarUrl
+				item.nickName = userinfo.data[0].name
+				
+				let imgs = []
+				for (var j=0; j<forumitem.data.imgList.length;j++) {
+					var url = await wx.cloud.downloadFile({
+									  fileID: forumitem.data.imgList[j], // 文件 ID
+									  
+									})
+									
+					imgs.push({
+						url: url.tempFilePath
+					})
+									
+				}
+				
+				item.imgList = imgs
+				
+				this.detail = item
+				this.commentList = forumitem.data.comment
+				
+			},
 			ViewImage(index, arr) {
 				let list = [];
 				for (let i = 0; i < arr.length; i++) {
@@ -131,17 +176,37 @@
 					urls: list
 				});
 			},
-			addCommon() {
+			async addCommon() {
 				// console.log('send')
 				let time = new Date().Format('MM-dd hh:mm');
-				// let time = 'a'
-				let params = {
-					avatarUrl: 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/avatar.png',
-					content: that.commentVal == '' ?  '奥里给' : that.commentVal,
-					nickName: '小黄吖',
-					time: time
+				
+				var myinfo = await db.collection('user').where({
+									  _openid: uni.getStorageSync('openid')
+								  }).get()
+								  
+				console.log(myinfo)
+				if (that.commentVal === '') {
+					
+				} else {
+					let params = {
+						avatarUrl: myinfo.data[0].avatarUrl,
+						content: that.commentVal,
+						nickName: myinfo.data[0].name,
+						time: time
+					}
+					
+					
+					that.commentList.splice(0,0,params)
+					
+					
+					forum.doc(this.detailId).update({
+						data: {
+							comment: that.commentList
+						}
+					})
 				}
-				that.commentList.splice(0,0,params)
+				// let time = 'a'
+				
 				that.commentVal = ''
 			},
 			swiperChange(e) {
@@ -152,10 +217,10 @@
 					url: '../mine/other'
 				});
 			},
-			handleFollow(id) {
-				let that = this;
-				that.detail.follow = !that.detail.follow;
-			}
+			// handleFollow(id) {
+			// 	let that = this;
+			// 	that.detail.follow = !that.detail.follow;
+			// }
 		}
 	};
 </script>

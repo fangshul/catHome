@@ -82,6 +82,9 @@
   min-height: 100vh;
   background-color: rgba(230, 230, 230, 0.5);
 }
+.body .nameType.data-v-a1e81cfc {
+  color: #F4AE26;
+}
 .body .nomore.data-v-a1e81cfc {
   text-align: center;
 }

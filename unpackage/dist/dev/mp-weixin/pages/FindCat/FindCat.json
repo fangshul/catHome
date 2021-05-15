@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "寻猫",
   "usingComponents": {
+    "cl-loading-mask": "/cl-uni/components/cl-loading-mask/cl-loading-mask",
     "selector": "/components/selector/selector"
   }
 }

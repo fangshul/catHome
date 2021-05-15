@@ -2,10 +2,14 @@
 .body.data-v-63d09364{
 	background-color: rgba(230,230,230,0.5);
 	min-height: 100vh;
+	padding-bottom: 30rpx;
 }
 .header.data-v-63d09364{
 	background-color: #fff;
 	margin-bottom: 20rpx;
+}
+.nameType.data-v-63d09364{
+	color: #F4AE26;
 }
 .title.data-v-63d09364{
 	padding-top: 40rpx;

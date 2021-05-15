@@ -45,8 +45,8 @@
 				<view class="order_status">
 					<navigator 
 						class="status" 
-						v-for="item in status" :key="index" 
-						:url="item.nexturl">
+						v-for="(item,index) in status" :key="index" 
+						:url="item.nexturl + '?id=' + openid">
 						<image class="icon" :src="item.url" mode="aspectFill"></image>
 						<text>{{item.name}}</text>
 					</navigator>
@@ -93,15 +93,17 @@
 				</view> -->
 			</view>
 		</view>
+		
 	</view>
 </template>
 
 <script>
 	const db = wx.cloud.database()
-	
+	const _this = this
 	export default {
 		data() {
 			return {
+				openid: '',
 				userName:'昵称',
 				visible: true,
 				closemode: false,
@@ -144,39 +146,66 @@
 			};
 		},
 		mounted() {
-			// if (this.$haveInfo) {
-			// 	this.visible = false
-			// } else {
-			// 	this.visible = true
-			// }
+			if (this.$haveInfo) {
+				this.visible = false
+				var userdata = uni.getStorageSync('userInfo')
+				this.userName = userdata.userInfo.nickName
+				this.headImg = userdata.userInfo.avatarUrl
+				
+				wx.cloud.callFunction ({
+					name: 'getopenid'
+				}).then(res => {
+					this.openid = res.result.openid
+				})
+				
+				// console.log(userdata)
+			} else {
+				this.visible = true
+			}
 		},
 		methods: {
+			async getdbdata () {
+				const userdata = await wx.cloud.callFunction ({
+					name: 'getopenid'
+				})
+				const openid = userdata.result.openid
+				this.openid = openid
+				uni.setStorageSync('openid',openid)
+				console.log(openid)
+				const haveUser = await db.collection('user').where({
+									  _openid:openid
+								  }).get()
+								  
+				console.log(haveUser.data.length)
+				if (haveUser.data.length == 0) {
+					console.log(this.userName)
+					console.log( this.headImg)
+					db.collection('user').add({
+						data:{
+							  name:  this.userName,
+							  avatarUrl:  this.headImg ,
+							  likeforum: []
+						  }
+					}).then(res => {
+						console.log(res)
+					})
+					// 				 //  data:{
+					// 					//   name:  _this.userName,
+					// 					//   avatarUrl:  _this.headImg 
+					// 				 //  },
+					// 				 //  // success: res =>{
+					// 					//  //  console.log(res)
+					// 				 //  // },
+					// 				 //  // fail: err => {
+					// 					//  //  console.log(err)
+					// 				 //  // }
+					// 			  // }).then(addData => {
+					// 				 //  console.log(addData)
+					// 			  // })
+				}
+			},
 			getUserProfile(eme) {
-				// wx.cloud.callFunction({
-				// 	name: 'getopenid',
-				// 	complete: res => {
-				// 		const openid = res.result.openid
-				// 		console.log(openid)
-				// 		db.collection('user').where({
-				// 			_openid: openid
-				// 		}).get().then(res => {
-				// 			if (res.data.length == 0) {
-				// 				console.log("授权登录成功")
-				// 				console.log(eme)
-				// 				// db.collection('user').add({
-				// 				// 	data: {
-				// 				// 		_openid: openid,
-				// 				// 		nikename: e.detail.userInfo.nickName,
-				// 				// 		avatarUrl: e.detail.userInfo.avatarUrl
-				// 				// 	}
-				// 				// })
-				// 			} else {
-				// 				console.log("已经登录过")
-				// 			}
-				// 			console.log("db",res)
-				// 		})
-				// 	}
-				// })
+				console.log("push")
 			    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
 			    // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
 			    wx.getUserProfile({
@@ -184,36 +213,48 @@
 			      success: (res) => {
 					  console.log(res)
 					  this.visible = false
-					  // console.log(this.$haveInfo)
+					  // // console.log(this.$haveInfo)
 					  uni.setStorageSync('userInfo',res)
 					  this.$haveInfo = true
 					  this.headImg = res.userInfo.avatarUrl
 					  this.userName = res.userInfo.nickName
 					  
-					  wx.cloud.callFunction({
-						  name: 'getopenid',
-						  success: res => {
-							  const openid = res.result.openid
-							  db.collection('user').where({
-								  _openid:openid
-							  }).get({
-								  success: res => {
-									  if (res.data.length == 0) {
-										  db.collection('user').add({
-											  data:{
-												  name:  res.userInfo.nickName
-											  },
-											  success: res =>{
-												  console.log(res)
-											  }
-										  })
-									  }
-									  console.log(res)
-								  }
-							  })
-							  // console.log(a)
-						  }
-					  })
+					  this.getdbdata()
+					  // console.log('db',this.getdbdata())
+					  // wx.cloud.callFunction({
+						 //  name: 'getopenid',
+						 //  success: res => {
+							//   const openid = res.result.openid
+							//   db.collection('user').where({
+							// 	  _openid:openid
+							//   }).get({
+							// 	  success: userDB => {
+							// 		  console.log(userDB)
+							// 		  console.log(userDB.data.length== 0)
+							// 		  if (userDB.data.length == 0) {
+							// 			  console.log("leng=0")
+							// 			  console.log( db.collection('user'))
+							// 			  //  db.collection('user').add({
+							// 				 //  data:{
+							// 					//   name:  _this.userName,
+							// 					//   avatarUrl:  _this.headImg 
+							// 				 //  },
+							// 				 //  // success: res =>{
+							// 					//  //  console.log(res)
+							// 				 //  // },
+							// 				 //  // fail: err => {
+							// 					//  //  console.log(err)
+							// 				 //  // }
+							// 			  // }).then(addData => {
+							// 				 //  console.log(addData)
+							// 			  // })
+							// 		  }
+							// 		  console.log(res)
+							// 	  }
+							//   })
+							//   // console.log(a)
+						 //  }
+					  // })
 			        // this.setData({
 			        //   userInfo: res.userInfo,
 			        //   hasUserInfo: true

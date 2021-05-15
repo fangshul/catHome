@@ -10,8 +10,11 @@
 					<!-- 漂流瓶 -->
 					<!-- v-if="activeTab == 0" -->
 					<view >
-						<view class="margin-bottom" v-for="(item, index) in cardList" :key="index">
-							<y-DiaryItem :obj="item" />
+						<view 
+							class="margin-bottom" 
+							v-for="(item, index) in alldata" 
+							:key="index">
+							<y-DiaryItem @like="changelike" :obj="item" />
 						</view>
 					</view>
 					<!-- 聚集岛 -->
@@ -20,7 +23,7 @@
 							<y-DiaryItem :obj="item" />
 						</view> -->
 					<!-- </view> -->
-					<y-LoadMore :status="loadMoreStatus" />
+					<!-- <y-LoadMore :status="loadMoreStatus" /> -->
 				</view>
 			</y-Refresh>
 			<!-- 右下角按钮 -->
@@ -30,6 +33,8 @@
 </template>
 
 <script>
+	const db = wx.cloud.database()
+	const forum = db.collection('forum')
 	// import yRefresh from '../../components/y-Refresh/y-Refresh.vue'
 	// import yDiaryItem from '../../components/y-DiaryItem/y-DiaryItem.vue'
 	// import yLoadMore from '../../components/y-LoadMore/y-LoadMore.vue'
@@ -48,16 +53,16 @@ export default {
 			startNum: 0,
 			activeTab: 0,
 			// tab的名称
-			tabList: [
-				{
-					title: '漂流瓶'
-				},
-				{
-					title: '聚集岛'
-				}
-			],
+			// tabList: [
+			// 	{
+			// 		title: '漂流瓶'
+			// 	},
+			// 	{
+			// 		title: '聚集岛'
+			// 	}
+			// ],
 			cardList: [],
-			rightList: [],
+			// rightList: [],
 			loadMoreStatus: 1, //0加载前，1加载中，2没有更多了
 			//fab的设置
 			fabList: [
@@ -67,36 +72,167 @@ export default {
 					fontSize: 28,
 					color: '#fff'
 				},
-				{
-					bgColor: '#37b59d',
-					text: '分享',
-					fontSize: 28,
-					color: '#fff'
-				}
-			]
+				// {
+				// 	bgColor: '#37b59d',
+				// 	text: '分享',
+				// 	fontSize: 28,
+				// 	color: '#fff'
+				// }
+			],
+			alldata: []
 		};
 	},
-	onLoad() {
+	onShow() {
+		this.alldata = []
 		that = this;
-		that.loadData('add');
-		that.rightList = that.$store.state.diary.rightList
+		// that.loadData('add');
+		that.getdata()
+	},
+	onLoad() {
+		
+		// that.rightList = that.$store.state.diary.rightList
 	},
 	onReachBottom() {
 		that.startNum++;
 		//上滑加载
-		that.loadData('add');
+		// that.loadData('add');
+		
 	},
 	methods: {
+		async changelike (data) {
+			console.log(data)
+			var likes  = await	db.collection('user').where({
+									  _openid:uni.getStorageSync('openid')
+								  }).get()
+			
+			let list = 	likes.data[0].likeforum
+			// 点击变为喜欢
+			if (data.islike == false) {
+				
+				
+				list.push(data.id)
+				db.collection('user').where({
+					  _openid:uni.getStorageSync('openid')
+				  }).update({
+				  // data 传入需要局部更新的数据
+				  data: {
+				    // 表示将 done 字段置为 true
+				    likeforum: list
+				  },
+				  success: function(res) {
+				    console.log(res)
+				  }
+				})
+				
+				var forumitem = await forum.doc(data.id).get()
+				forumitem.data.like = data.likeforum
+				forum.doc(data.id).update({
+					data: {
+						like: data.likenum+1
+					},
+					success: res => {
+						console.log(res)
+					}
+				})
+				console.log('item',forumitem)
+				// console.log(likes.data[0].likeforum)
+			} else {
+				// 点击变为不喜欢
+				for (var i=0; i<list.length; i++) {
+					if (data.id == list[i]) {
+						list.splice(i,1)
+					}
+				}
+				
+				console.log(list)
+				db.collection('user').where({
+					  _openid:uni.getStorageSync('openid')
+				  }).update({
+				  // data 传入需要局部更新的数据
+				  data: {
+				    // 表示将 done 字段置为 true
+				    likeforum: list
+				  },
+				  success: function(res) {
+				    console.log(res)
+				  }
+				})
+				
+				forum.doc(data.id).update({
+					data: {
+						like: data.likenum-1
+					},
+					success: res => {
+						console.log(res)
+					}
+				})
+				
+			}
+		},
+		async getdata () {
+			const forumdata = await forum.orderBy('date','desc').get({})
+			
+			for (var i=0; i<forumdata.data.length; i++) {
+				let item = {}
+				item.id = forumdata.data[i]._id
+				item.title = forumdata.data[i].content
+				item.likeNum = forumdata.data[i].like
+				let imgs = []
+				for (var j=0; j<forumdata.data[i].imgList.length;j++) {
+					var url = await wx.cloud.downloadFile({
+									  fileID: forumdata.data[i].imgList[j], // 文件 ID
+									  
+									})
+									
+					imgs.push({
+						url: url.tempFilePath
+					})
+									
+				}
+				
+				item.imgList = imgs
+				// item.createTime = forumdata.data[i].date
+				item.createTime = `${ forumdata.data[i].date.getMonth() + 1}-${forumdata.data[i].date.getDate()}`
+				console.log("commit",forumdata.data[i].comment)
+				item.commentNum = forumdata.data[i].comment.length
+				
+				var userinfo = await db.collection('user').where({
+									  _openid: forumdata.data[i]._openid
+								  }).get()
+								  
+				item.avatarUrl = userinfo.data[0].avatarUrl
+				item.nickName = userinfo.data[0].name
+				var myinfo = await db.collection('user').where({
+									  _openid: uni.getStorageSync('openid')
+								  }).get()
+				for (var x =0; x<myinfo.data[0].likeforum.length; x++) {
+					if (myinfo.data[0].likeforum == forumdata.data[i]._id) {
+						item.isLike = true
+						break
+					}
+				}
+				if (item.isLike == undefined) {
+					item.isLike = false
+				}
+				console.log(item.isLike)
+				this.alldata.push(item)
+			}
+			
+			// alldata = forumdata.data
+			
+			console.log(this.alldata)
+			
+		},
 		toDetails(id){
 			uni.navigateTo({
 				url: '../diary/details/details?id=' + id 
 			})
 		},
-		toOther(id){
-			uni.navigateTo({
-				url: '../mine/other/other?id=' + id
-			})
-		},
+		// toOther(id){
+		// 	uni.navigateTo({
+		// 		url: '../mine/other/other?id=' + id
+		// 	})
+		// },
 		loadData(type) {
 			if (type === 'add') {
 				// 上拉加载

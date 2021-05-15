@@ -1,41 +1,63 @@
 <template>
 	<view class="body">
-		<selector></selector>
+		<cl-loading-mask
+			:loading="true"  
+			text="拼命加载中"
+			:fullscreen="true"
+			v-if="ifloading"
+			>
+			
+		</cl-loading-mask>
+		<selector
+			@changcatinfo = "changeType"
+			@changlocation="changeLocation"
+		></selector>
 		<view class="cu-card article" :class="isCard?'no-card':''">
-			<view class="cu-item shadow">
-				<view class="title"><view class="text-cut">无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。</view></view>
+			<navigator 
+				v-for="(item,index) in adoptdata" 
+				:key="index"  
+				class="cu-item shadow " 
+				:url='"../AdoptDetail/AdoptDetail?id="+item._id' >
+				<view class="title">
+					<view class="text-cut">
+						{{ item.petAge }}岁 的 猫猫{{ item.petName }} 正在找家
+					</view>
+				</view>
 				<view class="content">
-					<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+					<image 
+					:src="item.headImg"
 					 mode="aspectFill"></image>
 					<view class="desc">
-						<view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
+						<view class="text-content"> {{ item.story }}</view>
 						<view>
-							<view class="cu-tag bg-red light sm round">正义天使</view>
-							<view class="cu-tag bg-green light sm round">史诗</view>
+							<view class="cu-tag bg-red light sm round" 
+								v-if="item.vaccine">
+								已免疫
+							</view>
+							<view 
+								v-if="item.sterilization"
+								class="cu-tag bg-green light sm round">
+								已绝育
+							
+							</view>
+							<view class="cu-tag bg-orange light sm round" 
+								v-if="item.expellingParasite">
+								已驱虫
+							</view>
 						</view>
 					</view>
 				</view>
-			</view>
-			<view class="cu-item shadow">
-				<view class="title"><view class="text-cut">无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。</view></view>
-				<view class="content">
-					<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-					 mode="aspectFill"></image>
-					<view class="desc">
-						<view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
-						<view>
-							<view class="cu-tag bg-red light sm round">正义天使</view>
-							<view class="cu-tag bg-green light sm round">史诗</view>
-						</view>
-					</view>
-				</view>
-			</view>
+			</navigator>
+			
 		</view>
 		<view class="nomore">--  暂无更多  --</view>
 	</view>
 </template>
 
 <script>
+	const db = wx.cloud.database()
+	const adopt = db.collection('adopt')
+	
 	import selector from '@/components/selector/selector.vue'
 	export default {
 		components:{
@@ -44,13 +66,100 @@
 		data() {
 			return {
 				isCard: false,
-				
+				adoptdata: '' ,
+				ifloading: true
 			};
 		},
+		onShow() {
+			this.getdata()
+		},
 		methods: {
+			async changeType (data) {
+				console.log('fa',data.value)
+				this.ifloading = true
+				if (data.prop == "type") {
+					
+					console.log("种类")
+					const cattype = await adopt.orderBy('date','desc').where({
+										  petType: data.value
+										}).get({})
+										
+					this.adoptdata = cattype.data
+					
+					this.getimgurl()
+				} else if (data.prop == "sex") {
+					console.log("xbie")
+					const catsex = await adopt.orderBy('date','desc').where({
+										  petSex: data.value
+										}).get({})
+										
+					this.adoptdata = catsex.data
+					
+					this.getimgurl()
+				} else if (data.prop == "rank") {
+					console.log("xinxi")
+					let catinfo = {}
+					for (var i =0; i<data.value.length; i++ ) {
+						if (data.value[i] == 1) {
+							catinfo.sterilization = true
+						} else if (data.value[i] == 2) {
+							catinfo.expellingParasite = true
+						} else {
+							catinfo.vaccine = true
+						}
+					}
+					console.log(catinfo)
+					const detail = await adopt.orderBy('date','desc').where(
+						catinfo
+					).get({})
+					this.adoptdata = detail.data
+					
+					this.getimgurl()					
+					console.log(detail)
+										
+				}
+			},
+			async changeLocation (data) {
+				this.ifloading = true
+				console.log('father',data)
+				
+				const selectdata = await adopt.orderBy('date','desc').where({
+				  adoptLocation: data
+				}).get({})
+				
+				this.adoptdata = selectdata.data
+				
+				this.getimgurl()
+			},
 			IsCard(e) {
 				this.isCard = e.detail.value
 			},
+			async getdata () {
+				const alldata = await adopt.orderBy('date','desc').get({
+					
+				})
+				console.log(alldata)
+				this.adoptdata = alldata.data
+				
+				this.getimgurl()
+				
+			},
+			async getimgurl () {
+				for (var i=0;i<this.adoptdata.length;i++) {
+					var url = await wx.cloud.downloadFile({
+								  fileID: this.adoptdata[i].imgList[0], // 文件 ID
+								  
+								})
+								
+					console.log(url.tempFilePath)
+					this.adoptdata[i].headImg = url.tempFilePath
+					
+					this.$forceUpdate()
+				}
+				console.log(this.adoptdata)
+				this.ifloading = false
+				// return url
+			}
 			
 		}
 	}

@@ -1,7 +1,7 @@
 <template>
 	<view class="body">
-		<view class="addImg">
-			<robby-image-upload limit="6" :value="imageData"></robby-image-upload>
+		<view class="addImg"  >
+			<robby-image-upload @add="updateImg" limit="6" :value="imageData"></robby-image-upload>
 			<view class="addimgtext">添加图片</view>
 			<view class="addimgnode"><text class="cuIcon-info"></text>最多只能添加6张图片</view>
 		</view>
@@ -10,7 +10,7 @@
 				
 					<!-- 单选下拉 -->
 					<cl-filter-item
-						v-model="str"
+						v-model="cattype"
 						label="猫咪品种"
 						:options="catlist"
 						type="dropdown"
@@ -21,6 +21,7 @@
 				</cl-filter-bar>
 			 <view class="uni-common-mt">
 				<v-form 
+					ref = "cat"
 					@submit="handleSubmit" 
 					:formDefinition="formDefinition" 
 					:data="catInfo" />
@@ -30,6 +31,7 @@
 		<view class="peopelInfo">
 			<view class="uni-common-mt">
 				<v-form 
+					ref = "people"
 					@submit="handleSubmit" 
 					:formDefinition="formPeople" 
 					:data="peopleInfo" />
@@ -61,12 +63,23 @@
 			<!-- <cl-textarea class="citySelect" v-model="detailLocation" placeholder="请输入详细地址"></cl-textarea> -->
 		</view>
 		<view class="pushBox">
-			<button class="push">发布</button>
+			<button class="push" @click="pushadopt">发布</button>
 		</view>
+		<cl-loading-mask
+			v-if="ifloading"  
+			:fullscreen="true" 
+			:loading="true" 
+			:text="loadingText">
+			
+		</cl-loading-mask>
+		<cl-toast ref="toast"></cl-toast>
 	</view>
 </template>
 
 <script>
+	const db = wx.cloud.database()
+	const adopt = db.collection('adopt')
+	import randomName from '../../static/randomName.js'
 	import areaData from '../../static/area-data-min.js'
 	import LbPicker from '@/components/lb-picker'
 	import VForm from '@/components/venus-form/v-form.vue'
@@ -75,12 +88,23 @@
 	export default {
 		data() {
 			return {
+				value2: '',
+				peopleInfo: {
+					peoplename: '',
+					peoplephone: '',
+					peoplewechat: '',
+					disphone:false,
+				},
+				cattype: "",
+				ifloading: false,
+				loadingText: "",
 				label2: '选择所在城市',
 				list1: areaData,
 				imageData: [],
 				catlist: '',
 				citydata: '',
 				detailLocation:'',
+				tmpimgdata: [],
 				formDefinition: {
 					fields: [
 						{
@@ -99,7 +123,7 @@
 							type: 'input', // 表单项的类型 这里是输入框
 							inputType: 'number', // 输入框的类型,有 text number digit textarea
 							password: false, // 是否为密码输入框
-							placeholder: '此处没有填写则为年龄不详', // 提示信息
+							placeholder: '请填写猫咪年龄', // 提示信息
 							disabled: false, // 是否禁用
 							maxLength: 10 // 最大输入长度
 						},
@@ -283,7 +307,164 @@
 			this.catlist = catdata.splice(1)
 		},
 		methods: {
-			
+			onChange() {
+				
+			},
+			pushadopt () {
+				var cat = this.$refs.cat.data
+				var master = this.$refs.people.data
+				console.log("img",this.tmpimgdata)
+				console.log("type",this.cattype)
+				console.log("cat",this.$refs.cat.data)
+				console.log("people",this.$refs.people.data)
+				console.log(this.value2)
+				console.log(this.detailLocation)
+				// console.log("people",this.$refs[people].data)
+				
+				// 没有上传图片
+				if (this.tmpimgdata.length==0) {
+					
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请上传猫咪图片",
+						position: "middle",
+						icon:"warning",
+						// duration: 100000
+						// type: 'warning'
+					})
+				} else if (this.cattype == "") {
+					// 没有猫咪种类
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请选择猫咪种类",
+						position: "middle",
+						icon:"warning",
+					
+					})
+				} else if (cat.name == "" || cat.age == "" || cat.sorry == "") {
+					// 没有猫咪信息
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请填写猫咪的信息",
+						position: "middle",
+						icon:"warning",
+						
+					})
+					
+				} else if (this.detailLocation = "" || this.value2 == undefined || this.value2 == "") {
+					// 没有位置
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请填写位置信息",
+						position: "middle",
+						icon:"warning",
+						
+					})
+				} else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
+					// 没有送养人信息
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请填写送养人信息",
+						position: "middle",
+						icon:"warning",
+						
+					})
+				} else {
+					this.ifloading = true
+					this.loadingText = "发布中"
+					adopt.add({
+						data:{
+							cost: cat.cost,
+							viewed: 0,
+							imgList:this.tmpimgdata,
+							date: new Date(),
+							adoptLocation: this.value2,
+							adoptdetailLocation: this.detailLocation,
+							// lostDate: this.lostdate,
+							// lostTime: this.losttime,
+							masterName: master.peoplename,
+							masterPhone: master.peoplephone,
+							masterWechat: master.peoplewechat,
+							disphone: master.disphone,
+							petName: cat.name,
+							petAge: cat.age,
+							petType: this.cattype,
+							sterilization :cat.sterilization,
+							vaccine: cat.vaccine,
+							expellingParasite: cat.expellingParasite,
+							condition: cat.condition,
+							petSex: cat.sex,
+							story: cat.sorry,
+							ifadopt: false
+						},
+						success: res => {
+							this.ifloading = false
+							
+							this.$refs["toast"].open({
+								type: "success",
+								message: "发布成功",
+								position: "middle",
+								icon:"success",
+								
+							})
+							uni.reLaunch({
+								url: '../Adopt/Adopt'
+							})
+							
+							
+						},
+						fail: err => {
+							this.ifloading = false
+							this.$refs["toast"].open({
+								type: "error",
+								message: "发布失败",
+								position: "middle",
+								icon:"error",
+								
+							})
+							console.log(err)
+						}
+					})
+				}
+			},
+			updateImg(data) {
+				// console.log('/findCat/'+randomName()+'.png')
+				// var tmpimgdata = []
+				this.ifloading = true
+				this.loadingText = "上传图片中..."
+				console.log(data.currentImages.length)
+				for (var i=0;i<data.currentImages.length;i++) {
+					console.log(i)
+					if (i == data.currentImages.length-1) {
+						wx.cloud.uploadFile({
+						  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
+						  filePath: data.currentImages[i], // 小程序临时文件路径
+						 
+						})
+						.then(res => {
+							
+							this.tmpimgdata.push(res.fileID)
+							this.ifloading = false
+							
+						})
+					} else {
+						wx.cloud.uploadFile({
+						  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+						  filePath: data.currentImages[i], // 小程序临时文件路径
+						 
+						})
+						.then(res => {
+							this.tmpimgdata.push(res.fileID)
+						})
+					}
+					
+				}
+				// this.ifloading = true
+				
+				// this.imgs = data.allImages
+				
+				
+			},
 			sexChange(e) {
 				// console.log( e.detail.value)
 				this.sexindex = e.detail.value

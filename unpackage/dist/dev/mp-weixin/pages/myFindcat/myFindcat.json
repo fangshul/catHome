@@ -6,6 +6,9 @@
     "uni-list-chat": "/components/uni-list-chat/uni-list-chat",
     "cl-icon": "/cl-uni/components/cl-icon/cl-icon",
     "cl-select": "/cl-uni/components/cl-select/cl-select",
+    "cl-confirm": "/cl-uni/components/cl-confirm/cl-confirm",
+    "cl-loading-mask": "/cl-uni/components/cl-loading-mask/cl-loading-mask",
+    "cl-toast": "/cl-uni/components/cl-toast/cl-toast",
     "uni-list-item": "/components/uni-list-item/uni-list-item"
   }
 }
