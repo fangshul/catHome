@@ -96,10 +96,10 @@ var components
 try {
   components = {
     clToast: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 250))
+      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 253))
     },
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     }
   }
 } catch (e) {
@@ -193,7 +193,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _randomName = _interopRequireDefault(__webpack_require__(/*! ../../static/randomName.js */ 96));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
 //
 //
 //
@@ -230,22 +232,57 @@ var db = wx.cloud.database();var forum = db.collection('forum');var _default = {
     ChooseImage: function ChooseImage() {var that = this;uni.chooseImage({ count: 9, //默认9
         sizeType: ['original'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
-        success: function success(res) {if (that.imgList.length != 0) {that.imgList = that.imgList.concat(res.tempFilePaths);} else {that.imgList = res.tempFilePaths;}} });}, //显示删除弹窗
-    DelImg: function DelImg(e) {var that = this;that.imgList.splice(e.currentTarget.dataset.index, 1);}, // 预览图片
-    ViewImage: function ViewImage(index) {var that = this;uni.previewImage({ current: index, urls: that.imgList });},
-    push: function push() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var imgfildid, i, imgurl;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+        success: function success(res) {var imgurl = res;res.tempFilePaths.forEach(function (items) {wx.getFileSystemManager().readFile({ filePath: items, success: function success(res) {wx.cloud.callFunction({ name: 'imgSecCheck', data: { img: res.data } }).then(function (res) {if (res.result.code == 200) {if (that.imgList.length != 0) {that.imgList = that.imgList.concat(imgurl.tempFilePaths);} else {that.imgList = imgurl.tempFilePaths;}console.log("图片可以");} else if (res.result.code == 500) {console.log("图片不ok");
+                    that.$refs["toast"].open({
+                      type: "warning",
+                      message: "内容含有违法违规内容",
+                      position: "middle",
+                      icon: "warning"
+                      // duration: 100000
+                      // type: 'warning'
+                    });
+                  }
+                });
+              } });
+
+          });
+
+        } });
+
+    },
+    //显示删除弹窗
+    DelImg: function DelImg(e) {
+      var that = this;
+      that.imgList.splice(e.currentTarget.dataset.index, 1);
+    },
+    // 预览图片
+    ViewImage: function ViewImage(index) {
+      var that = this;
+      uni.previewImage({
+        current: index,
+        urls: that.imgList });
+
+    },
+    push: function push() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, imgfildid, i, imgurl;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                that = _this;
+
+                // that.load = true
+                // 处理图片
                 imgfildid = [];
                 console.log(_this.imgList);
                 console.log(_this.content);
-                i = 0;case 4:if (!(i < _this.imgList.length)) {_context.next = 12;break;}_context.next = 7;return (
+                i = 0;case 5:if (!(i < _this.imgList.length)) {_context.next = 13;break;}_context.next = 8;return (
                   wx.cloud.uploadFile({
                     cloudPath: 'forum/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
                     filePath: _this.imgList[i] // 小程序临时文件路径
-                  }));case 7:imgurl = _context.sent;
+                  }));case 8:imgurl = _context.sent;
 
                 imgfildid.push(imgurl.fileID);
                 // console.log(imgurl)
-              case 9:i++;_context.next = 4;break;case 12:
+              case 10:i++;_context.next = 5;break;case 13:
+
+                console.log(that.content);
+
 
                 if (_this.content === '') {
                   _this.$refs["toast"].open({
@@ -256,47 +293,80 @@ var db = wx.cloud.database();var forum = db.collection('forum');var _default = {
 
 
                 } else {
-                  _this.ifloading = true;
-                  _this.loadingText = "发布中";
-                  forum.add({
+                  that.ifloading = true;
+                  that.loadingText = "发布中";
+
+                  wx.cloud.callFunction({
+                    name: "checkStr",
                     data: {
-                      content: _this.content,
-                      viewed: 0,
-                      imgList: imgfildid,
-                      date: new Date(),
-                      like: 0,
-                      comment: [] },
-
-
+                      inputText: that.content },
                     success: function success(res) {
-                      _this.ifloading = false;
+                      console.log('ok', res);
 
-                      _this.$refs["toast"].open({
-                        type: "success",
-                        message: "发布成功",
+                      forum.add({
+                        data: {
+                          content: that.content,
+                          viewed: 0,
+                          imgList: imgfildid,
+                          date: new Date(),
+                          like: 0,
+                          comment: [],
+                          likes: [] },
+
+
+                        success: function success(res) {
+                          that.ifloading = false;
+
+                          that.$refs["toast"].open({
+                            type: "success",
+                            message: "发布成功",
+                            position: "middle",
+                            icon: "success" });
+
+
+                          uni.reLaunch({
+                            url: '../Forum/Forum' });
+
+
+
+                        },
+                        fail: function fail(err) {
+                          that.ifloading = false;
+                          that.$refs["toast"].open({
+                            type: "error",
+                            message: "发布失败",
+                            position: "middle",
+                            icon: "error" });
+
+
+                          console.log(err);
+                        } });
+
+
+
+                    }, fail: function fail(err) {
+                      that.ifloading = false;
+                      that.content = "";
+                      that.$refs["toast"].open({
+                        type: "warning",
+                        message: "内容含有违法违规内容",
                         position: "middle",
-                        icon: "success" });
-
-
-                      uni.reLaunch({
-                        url: '../Forum/Forum' });
-
-
-
-                    },
-                    fail: function fail(err) {
-                      _this.ifloading = false;
-                      _this.$refs["toast"].open({
-                        type: "error",
-                        message: "发布失败",
-                        position: "middle",
-                        icon: "error" });
-
-
-                      console.log(err);
+                        icon: "warning"
+                        // duration: 100000
+                        // type: 'warning'
+                      });
+                      // console.log('err',err)
                     } });
 
-                }case 13:case "end":return _context.stop();}}}, _callee);}))();
+
+
+
+                }case 15:case "end":return _context.stop();}}}, _callee);}))();
+
+
+
+
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

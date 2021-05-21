@@ -1,7 +1,9 @@
 <template>
 	<view class="imageUploadContainer">
 		<view class="imageUploadList">
-			<view class="imageItem" v-bind:key="index" v-for="(path,index) in imageListData">
+			<view 
+				class="imageItem" 
+				v-bind:key="index" v-for="(path,index) in imageListData">
 				<image 
 					:src="path" 
 					:class="{'dragging':isDragging(index)}" 
@@ -22,7 +24,7 @@
 			<!-- <view v-if="isShowAdd" class="imageUpload" @tap="selectImage">+</view> -->
 		</view>
 		<image v-if="showMoveImage" class="moveImage" :style="{left:posMoveImageLeft, top:posMoveImageTop}" :src="moveImagePath"></image>
-		
+		<cl-toast ref="toast"></cl-toast>
 	</view>
 </template>
 
@@ -123,7 +125,7 @@
 					count: _self.limit ? (_self.limit - _self.imageList.length) : 999,
 					success: function(e){
 						var imagePathArr = e.tempFilePaths
-						
+						console.log(imagePathArr)
 						//如果设置了limit限制，在web上count参数无效，这里做判断控制选择的数量是否合要求
 						//在非微信小程序里，虽然可以选多张，但选择的结果会被截掉
 						//在app里，会自动做选择数量的限制
@@ -239,15 +241,52 @@
 								_self.$emit('input', _self.imageList)
 							})
 						}else{
-							for(let i=0; i<imagePathArr.length;i++){
-								_self.imageList.push(imagePathArr[i])
-							}
 							
-							_self.$emit('add', {
-								currentImages: imagePathArr,
-								allImages: _self.imageList
+							// 普通的显示图片
+							
+							imagePathArr.forEach(items => {
+								wx.getFileSystemManager().readFile({
+									filePath: items,
+									success: res => {
+										wx.cloud.callFunction({
+											name: 'imgSecCheck',
+											data:{
+												img: res.data
+											}
+										}).then(res => {
+											console.log('checkimg',res)
+											if (res.result.code == 200) {
+												// for(let i=0; i<imagePathArr.length;i++){
+												// 	_self.imageList.push(imagePathArr[i])
+												// }
+												_self.imageList.push(items)
+												
+												_self.$emit('add', {
+													currentImages: imagePathArr,
+													allImages: _self.imageList
+												})
+												_self.$emit('input', _self.imageList)
+												console.log("图片可以")
+											} else if (res.result.code == 500) {
+												console.log("图片不ok")
+												_self.$refs["toast"].open({
+													type: "warning",
+													message: "内容含有违法违规内容",
+													position: "middle",
+													icon:"warning",
+													// duration: 100000
+													// type: 'warning'
+												})
+											}
+										})
+									}
+								})
 							})
-							_self.$emit('input', _self.imageList)
+							
+							
+							
+							
+							
 						}
 					}
 				})
@@ -273,7 +312,8 @@
 				
 				this.$emit('delete',{
 					currentImage: deletedImagePath,
-					allImages: this.imageList
+					allImages: this.imageList,
+					imgindex: imageIndex
 				})
 				this.$emit('input', this.imageList)
 			},

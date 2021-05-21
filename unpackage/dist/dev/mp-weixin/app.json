@@ -17,7 +17,8 @@
     "pages/Message/Message",
     "pages/AdoptDetail/AdoptDetail",
     "pages/FindcatDetail/FindcatDetail",
-    "pages/personalCenter/personalCenter"
+    "pages/personalCenter/personalCenter",
+    "pages/Management/Management"
   ],
   "subPackages": [],
   "window": {
@@ -52,6 +53,11 @@
       }
     ]
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
   "usingComponents": {},
-  "sitemapLocation": "sitemap26.json"
+  "sitemapLocation": "sitemap19.json"
 }

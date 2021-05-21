@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "cl-row": "/cl-uni/components/cl-row/cl-row",
+    "cl-col": "/cl-uni/components/cl-col/cl-col",
+    "cl-button": "/cl-uni/components/cl-button/cl-button"
+  },
+  "component": true
+}

@@ -96,10 +96,10 @@ var components
 try {
   components = {
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     },
     clButton: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-button/cl-button */ "cl-uni/components/cl-button/cl-button").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-button/cl-button.vue */ 329))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-button/cl-button */ "cl-uni/components/cl-button/cl-button").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-button/cl-button.vue */ 337))
     }
   }
 } catch (e) {
@@ -273,7 +273,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 54));
+
+
+
+
+var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 49));
 var _cat = _interopRequireDefault(__webpack_require__(/*! @/static/cat.js */ 55));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 var db = wx.cloud.database();
 var findcat = db.collection('findCat');var _default =
@@ -360,7 +364,7 @@ var findcat = db.collection('findCat');var _default =
       // this.disphone = this.findcatdata.disphone
       // console.log(this.disphone)
       // console.log(catType)
-      _this.type = _cat.default[_this.findcatdata.petType].label;
+      // this.type = catType[this.findcatdata.petType].label
       _this.getimgurl();
       _this.getLocation(_this.findcatdata.lostLocation);
       _this.getdate(_this.findcatdata.date);
@@ -416,6 +420,7 @@ var findcat = db.collection('findCat');var _default =
             if (_areaDataMin.default[i].children[j].value == data[1]) {
               this.location = _areaDataMin.default[i].children[j].label;
               this.province = _areaDataMin.default[i].label;
+              break;
             }
           }
         }

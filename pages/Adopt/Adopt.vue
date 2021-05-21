@@ -14,13 +14,16 @@
 		></selector>
 		<view class="cu-card article" :class="isCard?'no-card':''">
 			<navigator 
+				
 				v-for="(item,index) in adoptdata" 
 				:key="index"  
+				v-if="!item.ifadopt"
 				class="cu-item shadow " 
 				:url='"../AdoptDetail/AdoptDetail?id="+item._id' >
 				<view class="title">
 					<view class="text-cut">
-						{{ item.petAge }}岁 的 猫猫{{ item.petName }} 正在找家
+						
+						{{ item.petAge }}岁 的 猫猫 <text style="color: #F4AE26;"> {{ item.petName }} </text> 正在找家
 					</view>
 				</view>
 				<view class="content">
@@ -135,7 +138,10 @@
 				this.isCard = e.detail.value
 			},
 			async getdata () {
-				const alldata = await adopt.orderBy('date','desc').get({
+				var loca = uni.getStorageSync('location')
+				const alldata = await adopt.orderBy('date','desc').where({
+					adoptLocation: loca
+				}).get({
 					
 				})
 				console.log(alldata)

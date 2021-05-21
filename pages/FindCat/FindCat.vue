@@ -16,13 +16,13 @@
 			<navigator 
 				
 				v-for="item in info"
-				:v-if="!item.iffind"
+				v-if="!item.iffind"
 				:key="index"
 				:url="'../FindcatDetail/FindcatDetail?id='+item._id"
 				class="cu-item shadow">
 				<view class="title">
 					<view class="text-cut">
-						猫咪 <text class="nameType"> {{ item.petName }} </text> 丢失，请求帮忙
+						猫咪 <text style="color: #F4AE26;"> {{ item.petName }} </text> 丢失，请求帮忙
 					</view>
 				</view>
 				<view class="content">
@@ -43,7 +43,7 @@
 							</view>
 							<view class="lostlocation">
 								<text class="cuIcon-location " ></text>
-								丢失地点：马坝
+								丢失地点：{{ item.loca }}
 							</view>
 							<!-- <view class="cu-tag bg-red light sm round">正义天使</view>
 							<view class="cu-tag bg-green light sm round">史诗</view> -->
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-	
+	import areaData from '../../static/area-data-min.js'
 	import selector from '@/components/selector/selector.vue'
 	
 	const db = wx.cloud.database()
@@ -80,6 +80,26 @@
 			
 		},
 		methods: {
+			getLocation () {
+				for (var m =0; m < this.info.length; m++) {
+					var data = this.info[m].lostLocation
+					
+					for (var i=0; i<areaData.length; i++) {
+						if (areaData[i].value == data[0]) {
+							for (var j=0; j<areaData[i].children.length; j++) {
+								if (areaData[i].children[j].value == data[1]) {
+									this.info[m].loca = areaData[i].children[j].label
+									console.log(this.info[m].loca )
+									// this.province = areaData[i].label
+									// break
+								}
+							}
+						}
+					}
+				}
+				
+				// console.log("2")
+			},
 			async changeType (data) {
 				console.log('fa',data.value)
 				this.ifloading = true
@@ -114,12 +134,21 @@
 				this.getimgurl()
 			},	
 			async getdata () {
-				const alldata = await todos.orderBy('date','desc').get({
+				var loca = uni.getStorageSync('location')
+				const alldata = await todos.orderBy('date','desc').where({
+					lostLocation: loca
+				}).get({
 					
 				})
 				this.info = alldata.data
 				
+				// alldata.forEach(items => {
+				// 	this.getLocation()
+				// })
+				this.getLocation()
 				this.getimgurl()
+				
+				
 				
 			},
 				
@@ -149,9 +178,9 @@
 	width: 100vw;
 	min-height: 100vh;
 	background-color: rgba(230,230,230,0.5);
-	.nameType{
-		color: #F4AE26;
-	}
+	// .nameType{
+		
+	// }
 	.nomore{
 		text-align: center;
 	}

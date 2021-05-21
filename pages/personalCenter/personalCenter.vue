@@ -13,13 +13,20 @@
 					<text>{{ nickname }}</text>
 				</view>
 				<view class="order_status">
-					<navigator 
-						class="status" 
-						v-for="item in status" :key="index" 
-						:url="item.nexturl">
+					<view
+					
+					class="status"
+					v-for="(item,index) in status" :key="index"
+					 @click="getdata(index)">
 						<image class="icon" :src="item.url" mode="aspectFill"></image>
 						<text>{{item.name}}</text>
-					</navigator>
+					</view>
+					<!-- <navigator 
+						class="status" 
+						v-for="item in status" :key="index" 
+						>
+						
+					</navigator> -->
 					
 				</view>
 				
@@ -28,68 +35,159 @@
 
 			</view>
 			
-			<view>
+			<view v-if="ifadopt">
 				<view class="person_title">他的领养</view>
 				<view class="cu-card article" :class="isCard?'no-card':''">
-					<navigator class="cu-item shadow " url="../AdoptDetail/AdoptDetail">
-						<view class="title"><view class="text-cut">无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。</view></view>
+					<navigator 
+						v-for="(item,index) in adoptinfo" 
+						class="cu-item shadow " 
+						:key = "index"
+						:url="'../AdoptDetail/AdoptDetail?id=' +item._id">
+						<view class="title">
+							<view class="text-cut">
+								
+								{{ item.petAge }}岁 的 猫猫 <text style="color: #F4AE26;"> {{ item.petName }} </text> 正在找家
+							</view>
+						</view>
 						<view class="content">
-							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+							<image 
+							:src="item.headImg"
 							 mode="aspectFill"></image>
 							<view class="desc">
-								<view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
+								<view class="text-content"> {{ item.story }}</view>
 								<view>
-									<view class="cu-tag bg-red light sm round">正义天使</view>
-									<view class="cu-tag bg-green light sm round">史诗</view>
+									<view class="cu-tag bg-red light sm round" 
+										v-if="item.vaccine">
+										已免疫
+									</view>
+									<view 
+										v-if="item.sterilization"
+										class="cu-tag bg-green light sm round">
+										已绝育
+									
+									</view>
+									<view class="cu-tag bg-orange light sm round" 
+										v-if="item.expellingParasite">
+										已驱虫
+									</view>
 								</view>
 							</view>
 						</view>
 					</navigator>
 					
-					<view class="cu-item shadow" >
-						<view class="title"><view class="text-cut">无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。</view></view>
+				</view>
+			</view>
+			<view v-if="iffindcat">				
+				<view class="person_title">他的寻猫</view>
+				<view class="cu-card article" :class="isCard?'no-card':''">
+					<navigator 
+						
+						v-for="(item,index) in findCatinfo"
+						:v-if="!item.iffind"
+						:key="index"
+						:url="'../FindcatDetail/FindcatDetail?id='+item._id"
+						class="cu-item shadow">
+						<view class="title">
+							<view class="text-cut">
+								猫咪 <text style="color: #F4AE26;"> {{ item.petName }} </text> 丢失，请求帮忙
+							</view>
+						</view>
 						<view class="content">
-							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+							
+							<image 
+								style="height: 250rpx;"
+								:src="item.headImg"
+								
 							 mode="aspectFill"></image>
 							<view class="desc">
-								<view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
-								<view>
-									<view class="cu-tag bg-red light sm round">正义天使</view>
-									<view class="cu-tag bg-green light sm round">史诗</view>
+								<view class="text-content"> 
+									{{ item.story }}
+								</view>
+								<view class="lostInfo">
+									<view class="lostTime">
+										<text class="cuIcon-timefill " ></text>
+										丢失时间：{{ item.lostDate }}
+									</view>
+									<view class="lostlocation">
+										<text class="cuIcon-location " ></text>
+										丢失地点：{{ item.loca }}
+									</view>
+									
 								</view>
 							</view>
 						</view>
-					</view>
+					</navigator>
+					
+					
 				</view>
 			</view>
+			<view v-if="ifforum">
+				<view class="person_title">他的讨论</view>
+				<uni-list>
+				  
+					<uni-list-chat 
+						v-for="(item,index) in foruminfo"
+						:key = "index"
+						:title="item.content" 
+						:avatar="item.headImg" 
+						
+						:note="item.date.getMonth()+1 + ' - ' + item.date.getDate()" 
+						
+						badge-positon="left" 
+						
+						>
+						 <view class="chat-custom-right">
+							
+						 </view>
+					 </uni-list-chat>
+				</uni-list>
+			</view>
+			<view style="margin-top: 20rpx; text-align: center;">-- 暂无更多 --</view>
 		</view>
+		
+		<cl-loading-mask v-if="load" :loading="true" text="拼命加载中">
+			
+		</cl-loading-mask>
 	</view>
 </template>
 
 <script>
 	const db = wx.cloud.database()
+	
+	const adopt = db.collection('adopt')
+	const findcat = db.collection('findCat')
+	const forum = db.collection('forum')
+	
 	export default {
 		data() {
 			return {
+				load: true,
+				ifadopt: true,
+				iffindcat: false,
+				ifforum: false,
+				adoptinfo: '',
+				findCatinfo: '',
+				foruminfo: '',
+				id: '',
 				nickname: "",
 				headImg:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn11%2F600%2Fw700h700%2F20180424%2F514b-fzqvvsa3694420.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622959077&t=b701606d5bdedcef64ca889f3d23acd0',
 				status: [{
 						key: 1,
 						name: '领养',
 						url: '../../static/images/personal/adopt.png',
-						nexturl: '../myAdopt/myAdopt'
+						// nexturl: 'getadopt'
 					},
 					{
 						key: 2,
 						name: '寻猫',
 						url: '../../static/images/personal/findcat.png',
-						nexturl: '../myFindcat/myFindcat'
+						// nexturl: 'getfindcat'
 					},
 					{
 						key: 3,
 						name: '讨论',
 						url: '../../static/images/personal/message.png',
-						nexturl: '../myForum/myForum'
+						// nexturl: 'getforum'
 					}
 					
 				],
@@ -111,20 +209,95 @@
 				]
 			};
 		},
+		onShow () {
+			// this.getadopt()
+		},
 		methods: {
-			
+			async getimgurl () {
+				for (var i=0;i<this.adoptinfo.length;i++) {
+					var url = await wx.cloud.downloadFile({
+								  fileID: this.adoptinfo[i].imgList[0], // 文件 ID
+								  
+								})
+								
+					console.log(url.tempFilePath)
+					this.adoptinfo[i].headImg = url.tempFilePath
+					
+					this.$forceUpdate()
+				}
+				console.log(this.adoptinfo)
+				this.load = false
+				// return url
+			},
+			getdata (data) {
+				console.log('key',data)
+				if (data == 0) {
+					this.ifadopt = true
+					this.iffindcat = false
+					this.ifforum = false
+					this.getadopt()
+				} else if (data == 1) {
+					this.ifadopt = false
+					this.iffindcat = true
+					this.ifforum = false
+					// this.getfindcat()
+				} else if (data == 2) {
+					this.ifadopt = false
+					this.iffindcat = false
+					this.ifforum = true
+					// this.getforum()
+				}
+			},
+			async getadopt () {
+				this.load = true
+			 	var adoptdata = await adopt.where({
+					_openid: this.id
+				}).get()
+				
+				this.adoptinfo = adoptdata.data
+				console.log('adopt',this.adoptinfo)
+				
+				this.getimgurl()
+				
+			},
+			async getfindcat () {
+				var findcatdata = await findcat.where({
+					_openid: this.id
+				}).get()
+				
+				this.findCatinfo = findcatdata
+				console.log(findcatdata)
+			},
+			async getforum () {
+				
+				var forumdata = await forum.where({
+					_openid: this.id
+				}).get()
+				
+				this.foruminfo = forumdata
+				console.log(forumdata)
+			}
 		},
 		onLoad (option) {
+			this.id = option.id
 			console.log(option)
-			db.collection('user').where({
-			  _openid: option.id
-			  
-			}).get({}).then(res => {
-				console.log(res)
-				this.headImg = res.data[0].avatarUrl
-				this.nickname = res.data[0].name
-				
+			db.collection('user').doc(this.id).get({}).then(res => {
+				console.log('userinfo',res)
+				this.headImg = res.data.avatarUrl
+				this.nickname = res.data.name
 			})
+			// db.collection('user').where({
+			//   _openid: option.id
+			  
+			// }).get({}).then(res => {
+			// 	console.log(res)
+			// 	this.headImg = res.data[0].avatarUrl
+			// 	this.nickname = res.data[0].name
+				
+			// })
+		},
+		onShow() {
+			
 		},
 		computed: {
 

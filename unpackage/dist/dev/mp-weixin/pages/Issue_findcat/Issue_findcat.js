@@ -96,22 +96,22 @@ var components
 try {
   components = {
     robbyImageUpload: function() {
-      return __webpack_require__.e(/*! import() | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then(__webpack_require__.bind(null, /*! @/components/robby-image-upload/robby-image-upload.vue */ 262))
+      return __webpack_require__.e(/*! import() | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then(__webpack_require__.bind(null, /*! @/components/robby-image-upload/robby-image-upload.vue */ 270))
     },
     clFilterBar: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-filter-bar/cl-filter-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-bar/cl-filter-bar")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-bar/cl-filter-bar.vue */ 205))
+      return Promise.all(/*! import() | cl-uni/components/cl-filter-bar/cl-filter-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-bar/cl-filter-bar")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-bar/cl-filter-bar.vue */ 213))
     },
     clFilterItem: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-filter-item/cl-filter-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-item/cl-filter-item")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-item/cl-filter-item.vue */ 210))
+      return Promise.all(/*! import() | cl-uni/components/cl-filter-item/cl-filter-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-item/cl-filter-item")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-item/cl-filter-item.vue */ 218))
     },
     clTextarea: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-textarea/cl-textarea */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-textarea/cl-textarea")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-textarea/cl-textarea.vue */ 269))
+      return Promise.all(/*! import() | cl-uni/components/cl-textarea/cl-textarea */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-textarea/cl-textarea")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-textarea/cl-textarea.vue */ 277))
     },
     clToast: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 250))
+      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 253))
     },
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     }
   }
 } catch (e) {
@@ -261,8 +261,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _randomName = _interopRequireDefault(__webpack_require__(/*! ../../static/randomName.js */ 96));
-var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 54));
+var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 49));
 
 
 var _cat = _interopRequireDefault(__webpack_require__(/*! ../../static/cat.js */ 55));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
@@ -357,7 +359,9 @@ var _cat = _interopRequireDefault(__webpack_require__(/*! ../../static/cat.js */
 //
 //
 //
-var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/lb-picker/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/lb-picker/index")]).then((function () {return resolve(__webpack_require__(/*! @/components/lb-picker */ 216));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var VForm = function VForm() {__webpack_require__.e(/*! require.ensure | components/venus-form/v-form */ "components/venus-form/v-form").then((function () {return resolve(__webpack_require__(/*! @/components/venus-form/v-form.vue */ 275));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var robbyImageUpload = function robbyImageUpload() {__webpack_require__.e(/*! require.ensure | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then((function () {return resolve(__webpack_require__(/*! @/components/robby-image-upload/robby-image-upload.vue */ 262));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var db = wx.cloud.database();var findcat = db.collection('findCat'); // const _this = this
+//
+//
+var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/lb-picker/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/lb-picker/index")]).then((function () {return resolve(__webpack_require__(/*! @/components/lb-picker */ 224));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var VForm = function VForm() {__webpack_require__.e(/*! require.ensure | components/venus-form/v-form */ "components/venus-form/v-form").then((function () {return resolve(__webpack_require__(/*! @/components/venus-form/v-form.vue */ 283));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var robbyImageUpload = function robbyImageUpload() {__webpack_require__.e(/*! require.ensure | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then((function () {return resolve(__webpack_require__(/*! @/components/robby-image-upload/robby-image-upload.vue */ 270));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var db = wx.cloud.database();var findcat = db.collection('findCat'); // const _this = this
 var _default = { data: function data() {return { loadingText: '', ifloading: false, value2: '', nowdate: '', nowtime: '', cattype: '', lostdate: '', losttime: '', label2: '选择所在城市', list1: _areaDataMin.default, imageData: [], catlist: '', citydata: '', detailLocation: '', formDefinition: { fields: [{ label: '昵称', // 表单显示名称
           name: 'name', // 每个表单项的唯一标识(不能重复)
           type: 'input', // 表单项的类型 这里是输入框
@@ -371,7 +375,7 @@ var _default = { data: function data() {return { loadingText: '', ifloading: fal
           type: 'input', // 表单项的类型 这里是输入框
           inputType: 'number', // 输入框的类型,有 text number digit textarea
           password: false, // 是否为密码输入框
-          placeholder: '此处没有填写则为年龄不详', // 提示信息
+          placeholder: '请填写宠物年龄', // 提示信息
           disabled: false, // 是否禁用
           maxLength: 10 // 最大输入长度
         }, { label: '性别', name: 'sex', type: 'radio', // 表单项的类型 这里是单选类型
@@ -411,7 +415,19 @@ var _default = { data: function data() {return { loadingText: '', ifloading: fal
           disabled: false, // 是否禁用
           maxLength: -1 // 最大输入长度
         }, { label: '是否显示电话号码', name: 'disphone', type: 'switch' // 表单项的类型 这里是开关类型
-        }] }, imgs: [], tmpimgdata: [] };}, components: { robbyImageUpload: robbyImageUpload, VForm: VForm, LbPicker: LbPicker }, mounted: function mounted() {this.getnowTime();this.lostdate = this.nowdate;this.losttime = this.nowtime;this.catlist = _cat.default.splice(1);
+        }] }, imgs: [], tmpimgdata: [], masterImg: '' };}, components: { robbyImageUpload: robbyImageUpload, VForm: VForm, LbPicker: LbPicker }, onShow: function onShow() {this.getnowTime();this.lostdate = this.nowdate;this.losttime = this.nowtime;this.catlist = _cat.default.slice(1);console.log('catdata', this.catlist);
+    var that = this;
+    db.collection('user').where({
+      _openid: uni.getStorageSync('openid') }).
+
+    get().then(function (res) {
+      console.log(res.data[0].avatarUrl);
+
+      that.masterImg = res.data[0].avatarUrl;
+    });
+  },
+  mounted: function mounted() {
+
   },
   methods: {
     getnowTime: function getnowTime() {
@@ -426,42 +442,68 @@ var _default = { data: function data() {return { loadingText: '', ifloading: fal
     updateImg: function updateImg(data) {var _this = this;
       // console.log('/findCat/'+randomName()+'.png')
       // var tmpimgdata = []
-      this.ifloading = true;
-      this.loadingText = "上传图片中...";
+      // this.ifloading = true
+      // this.loadingText = "上传图片中..."
+      data.currentImages.forEach(function (items) {
+        wx.cloud.uploadFile({
+          cloudPath: 'findCat/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
+          filePath: items // 小程序临时文件路径
+        }).
+
+        then(function (res) {
+          console.log('fileid', res);
+          _this.tmpimgdata.push(res.fileID);
+          // this.ifloading = false
+
+        });
+      });
       console.log(data.currentImages.length);
-      for (var i = 0; i < data.currentImages.length; i++) {
-        console.log(i);
-        if (i == data.currentImages.length - 1) {
-          wx.cloud.uploadFile({
-            cloudPath: 'findCat/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
-            filePath: data.currentImages[i] // 小程序临时文件路径
-          }).
+      // for (var i=0;i<data.currentImages.length;i++) {
+      // 	console.log(i)
+      // 	if (i == data.currentImages.length-1) {
+      // 		wx.cloud.uploadFile({
+      // 		  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+      // 		  filePath: data.currentImages[i], // 小程序临时文件路径
 
-          then(function (res) {
+      // 		})
+      // 		.then(res => {
 
-            _this.tmpimgdata.push(res.fileID);
-            _this.ifloading = false;
+      // 			this.tmpimgdata.push(res.fileID)
+      // 			this.ifloading = false
 
-          });
-        } else {
-          wx.cloud.uploadFile({
-            cloudPath: 'findCat/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
-            filePath: data.currentImages[i] // 小程序临时文件路径
-          }).
+      // 		})
+      // 	} else {
+      // 		wx.cloud.uploadFile({
+      // 		  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+      // 		  filePath: data.currentImages[i], // 小程序临时文件路径
 
-          then(function (res) {
-            _this.tmpimgdata.push(res.fileID);
-          });
-        }
+      // 		})
+      // 		.then(res => {
+      // 			this.tmpimgdata.push(res.fileID)
+      // 		})
+      // 	}
 
-      }
+      // }
       // this.ifloading = true
 
       // this.imgs = data.allImages
 
 
     },
+    deleteimg: function deleteimg(data) {
+      console.log('delete', data);
+      var fileid = this.tmpimgdata[data.imgindex];
+      console.log(fileid);
+      var x = [];
+      x.push(fileid);
+      this.tmpimgdata.splice(data.imgindex, 1);
 
+      wx.cloud.deleteFile({
+        fileList: x }).
+      then(function (res) {
+        console.log(res);
+      });
+    },
     getData: function getData() {var _this2 = this;
       // this.a()
       // console.log(this.imgs)
@@ -523,10 +565,19 @@ var _default = { data: function data() {return { loadingText: '', ifloading: fal
           icon: "warning" });
 
 
+      } else if (master.peoplephone.length < 11) {
+        this.$refs["toast"].open({
+          type: "warning",
+          message: "请填写正确的手机号码",
+          position: "middle",
+          icon: "warning" });
+
+
       } else {
         this.ifloading = true;
         findcat.add({
           data: {
+            masterImg: this.masterImg,
             imgList: this.tmpimgdata,
             date: new Date(),
             lostLocation: this.value2,

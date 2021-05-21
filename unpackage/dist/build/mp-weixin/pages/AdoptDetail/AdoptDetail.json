@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "cl-loading-mask": "/cl-uni/components/cl-loading-mask/cl-loading-mask",
+    "cl-grid": "/cl-uni/components/cl-grid/cl-grid",
+    "cl-grid-item": "/cl-uni/components/cl-grid-item/cl-grid-item",
+    "cl-button": "/cl-uni/components/cl-button/cl-button"
+  }
+}

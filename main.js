@@ -19,7 +19,12 @@ if (info == null || info == '' || info == undefined) {
 	haveInfo = true
 }
 
+
+
+
 Vue.prototype.$haveInfo = haveInfo
+Vue.prototype.$province = ''
+Vue.prototype.$city = ''
 
 
 

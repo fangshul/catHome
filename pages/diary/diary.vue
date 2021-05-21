@@ -1,5 +1,8 @@
 <template>
 	<view class="detail-wrap">
+		<cl-loading-mask v-if="load" :loading="true" text="拼命加载中">
+			
+		</cl-loading-mask>
 		<view class="item-head">
 			<view class="left-info">
 				<view class="img-wrap flex-center" @tap="toOthers">
@@ -34,7 +37,7 @@
 								<view class="right-top">
 									<p class="title">
 										{{ item.nickName }}
-										<text class="author">作者</text>
+										<!-- <text class="author">作者</text> -->
 									</p>
 									<text class="time">{{item.time}}</text>
 								</view>
@@ -83,6 +86,7 @@
 	export default {
 		data() {
 			return {
+				load: true,
 				detailId: '',
 				commentVal: '',
 				current: 0,
@@ -129,6 +133,7 @@
 
 		methods: {
 			async getdetail () {
+				this.load = true
 				var forumitem = await forum.doc(this.detailId).get({
 					
 				})
@@ -139,7 +144,7 @@
 				// item.avatarUrl = 
 				item.title = forumitem.data.content
 				item.time  = `${ forumitem.data.date.getMonth() + 1}-${forumitem.data.date.getDate()}`
-				
+				item.openid = forumitem.data._openid
 				var userinfo = await db.collection('user').where({
 									  _openid: forumitem.data._openid
 								  }).get()
@@ -164,7 +169,7 @@
 				
 				this.detail = item
 				this.commentList = forumitem.data.comment
-				
+				this.load = false
 			},
 			ViewImage(index, arr) {
 				let list = [];
@@ -214,7 +219,7 @@
 			},
 			toOthers() {
 				uni.navigateTo({
-					url: '../mine/other'
+					url: '../personalCenter/personalCenter?id=' + this.detail.openid
 				});
 			},
 			// handleFollow(id) {

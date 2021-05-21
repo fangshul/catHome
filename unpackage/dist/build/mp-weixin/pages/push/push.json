@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "cl-toast": "/cl-uni/components/cl-toast/cl-toast",
+    "cl-loading-mask": "/cl-uni/components/cl-loading-mask/cl-loading-mask"
+  }
+}

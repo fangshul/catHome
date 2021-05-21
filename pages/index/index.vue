@@ -21,10 +21,7 @@
 					<image src="../../static/images/index/forun.png"></image>
 					<view>论坛</view>
 				</navigator>
-				<!-- <navigator  url="../black/black">
-					<image src="../../static/images/index/black.png"></image>
-					<view>黑名单</view>
-				</navigator> -->
+				
 				
 			</view>
 		</view>
@@ -32,20 +29,19 @@
 			<view class="titleText">
 				最新领养
 			</view>
-			<!-- <view class="titleText text-xl solid-bottom">
-				<text class="text-black text-bold">
-					最新领养
-				</text>
-			</view> -->
+			
 			<view class="cu-card article" :class="isCard?'no-card':''">
 				<navigator
 					v-for="(item,index) in adoptdata" 
-					:key="index"  
+					:key="index" 
+					 v-if="!item.ifadopt"
 					class="cu-item shadow " 
 					:url='"../AdoptDetail/AdoptDetail?id="+item._id' >
 					<view class="title">
+						
 						<view class="text-cut">
-							{{ item.petAge }}岁 的 猫猫{{ item.petName }} 正在找家
+							
+							{{ item.petAge }}岁 的 猫猫 <text style="color: #F4AE26;"> {{ item.petName }} </text>   正在找家
 						</view>
 					</view>
 					<view class="content">
@@ -73,56 +69,27 @@
 						</view>
 					</view>
 				</navigator>
-				<!-- <view class="cu-item shadow " >
-					<view class="title"><view class="text-cut">无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。</view></view>
-					<view class="content">
-						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-						 mode="aspectFill"></image>
-						<view class="desc">
-							<view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
-							<view>
-								<view class="cu-tag bg-red light sm round">正义天使</view>
-								<view class="cu-tag bg-green light sm round">史诗</view>
-							</view>
-						</view>
-					</view>
-				</view> -->
-				<!-- <view class="cu-item shadow" >
-					<view class="title"><view class="text-cut">无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。</view></view>
-					<view class="content">
-						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-						 mode="aspectFill"></image>
-						<view class="desc">
-							<view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
-							<view>
-								<view class="cu-tag bg-red light sm round">正义天使</view>
-								<view class="cu-tag bg-green light sm round">史诗</view>
-							</view>
-						</view>
-					</view>
-				</view> -->
+				
 			</view>
 		</view>
 		<view class="find">
 			<view class="titleText">
 				最新寻猫
 			</view>
-			<!-- <view class="titleText text-xl solid-bottom">
-				<text class="text-black text-bold">
-					最新寻猫
-				</text>
-			</view> -->
+			
 			<view class="cu-card article" :class="isCard?'no-card':''">
 				<navigator
 					
-					v-for="item in findcat"
-					:v-if="!item.iffind"
+					v-for="(item,index) in findcat"
+					v-if="!item.iffind"
 					:key="index"
 					:url="'../FindcatDetail/FindcatDetail?id='+item._id"
 					class="cu-item shadow">
+					
 					<view class="title">
 						<view class="text-cut">
-							猫咪 <text class="nameType"> {{ item.petName }} </text> 丢失，请求帮忙
+							
+							猫咪 <text style="color: #F4AE26;"> {{ item.petName }} </text> 丢失，请求帮忙
 						</view>
 					</view>
 					<view class="content">
@@ -143,10 +110,9 @@
 								</view>
 								<view class="lostlocation">
 									<text class="cuIcon-location " ></text>
-									丢失地点：马坝
+									丢失地点：{{ item.loca }}
 								</view>
-								<!-- <view class="cu-tag bg-red light sm round">正义天使</view>
-								<view class="cu-tag bg-green light sm round">史诗</view> -->
+								
 							</view>
 						</view>
 					</view>
@@ -155,7 +121,9 @@
 			</view>
 		</view>
 			
-		
+		<cl-loading-mask v-if="load" :loading="true" text="拼命加载中">
+			
+		</cl-loading-mask>
 	</view>
 </template>
 
@@ -163,7 +131,7 @@
 	const db = wx.cloud.database()
 	const todos = db.collection('findCat')
 	const adopt = db.collection('adopt')
-	
+		import areaData from '../../static/area-data-min.js'
 	import carousel from '@/components/vear-carousel/vear-carousel'
 	export default {
 		components:{
@@ -171,6 +139,7 @@
 		},
 		data() {
 			return {
+				load: '',
 				title: 'Hello',
 				imgList: [{
 					url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3488207672,3352446836&fm=26&gp=0.jpg',
@@ -178,24 +147,123 @@
 				},{
 					url: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2653786338,2258592089&fm=26&gp=0.jpg',
 					id: 2
-				},{
-					url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3440678884,1757659684&fm=26&gp=0.jpg',
-					id: 3
-				}],
+				},
+				
+				],
 				findcat: [],
 				adoptdata:[]
 			}
 		},
 		onShow () {
-			console.log('onshow')
+			this.load = true
+			this.findcat = []
+			this.adoptdata = []
+			// 加载寻猫
 			this.getfindcatdata()
+			// 加载领养
 			this.getadoptdata()
 		},
 		onLoad() {
-			console.log('onload')
+			var _this = this
+			// wx.openSetting({
+			// var transform = require('wgs2mars');
+			// var gcjloc = transform(119.3122312,26.0240049);	
+			// // }) 
+			// console.log('city',gcjloc)
+			// uni.getLocation({
+			//     type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+			//     success:(res)=>{
+			// 		let that=this
+			//         const latitude = res.latitude;
+			//         const longitude = res.longitude;
+			// 		console.log(res)
+			//         uni.request({
+			// 			header:{
+			// 				"Content-Type": "application/text"
+			// 			},
+			// 			//注意:这里的key值需要高德地图的 web服务生成的key  只有web服务才有逆地理编码
+			// 			url:'https://restapi.amap.com/v3/geocode/regeo?output=JSON&location='+res.longitude+','+res.latitude+'&key=280802ed0116fef931dbcf5e7e9278d7&radius=1000&extensions=all',
+			// 			success(re) {
+			// 				console.log(re)
+			// 				if(re.statusCode===200){
+			// 					// that.citydata=re.data.regeocode.addressComponent.city
+			// 					// re.data.regeocode.addressComponent.province
+			// 					// console.log("获取中文街道地理位置成功",that.citydata)
+			// 					// _this.$city = re.data.regeocode.addressComponent.city
+			// 					// _this.$province = re.data.regeocode.addressComponent.province
+								
+			// 					uni.setStorageSync('city',re.data.regeocode.addressComponent.city)
+			// 					uni.setStorageSync('province',re.data.regeocode.addressComponent.province)
+			// 					// console.log(_this.$city)
+			// 					// console.log(_this.$province)
+							
+			// 				}else{
+			// 					console.log("获取信息失败，请重试！")
+			// 				}
+			// 			 }
+			// 		});
+			//     }
+			// });
+
+
+			wx.getLocation({
+			 type: 'wgs84',
+			 success (res) {
+				 console.log(res)
+			   const latitude = res.latitude
+			   const longitude = res.longitude
+			   const speed = res.speed
+			   const accuracy = res.accuracy
+			   _this.getProvinceName(latitude,longitude)
+			 }
+			})
 			
+			// 轮播图
+			wx.cloud.downloadFile({
+			  fileID: 'cloud://cloud1-4grgkkd40c94fb6a.636c-cloud1-4grgkkd40c94fb6a-1305831904/lunbo.png',
+			   // 文件 ID
+			  success: res => {
+				  console.log(res.tempFilePath)
+				  this.imgList.push({
+					  url: res.tempFilePath,
+					  id: 3
+				  })
+			  }
+			})
 		},
 		methods: {
+			getLocation () {
+				for (var m =0; m < this.findcat.length; m++) {
+					var data = this.findcat[m].lostLocation
+					
+					for (var i=0; i<areaData.length; i++) {
+						if (areaData[i].value == data[0]) {
+							for (var j=0; j<areaData[i].children.length; j++) {
+								if (areaData[i].children[j].value == data[1]) {
+									this.findcat[m].loca = areaData[i].children[j].label
+									console.log(this.findcat[m].loca )
+									// this.province = areaData[i].label
+									// break
+								}
+							}
+						}
+					}
+				}
+			},
+			getProvinceName(latitude, longitude){
+			    wx.request({
+			      url: 'https://apis.map.qq.com/ws/geocoder/v1/?location=' + latitude + ',' + longitude + '&key=4W2BZ-WTC3J-IC4FD-KFYJG-63EF6-K2FAA',   
+			      data:{},
+			      success: (res)=> {
+			        console.log('now',res)
+					uni.setStorageSync('city',res.data.result.address_component.city)
+					uni.setStorageSync('province',res.data.result.address_component.province)
+			       // res.data.result.address_component.province   就是我要获取的省份了；
+			        // });
+			      }
+			    })
+			  },
+
 			// 点击轮播图
 			selectedBanner(item, index) {
 				console.log('', item, index)
@@ -227,13 +295,15 @@
 				// this.adoptdata = alldata.data
 				
 				// this.getimgurl()
-				
+				if (this.load) {
+					this.load = false
+				}
 			},
 			async getfindcatdata () {
 				const alldata = await todos.orderBy('date','desc').get({
 					
 				})
-				console.log(alldata)
+				console.log('find',alldata)
 				var max
 				if (alldata.data.length > 3) {
 					max = 3
@@ -252,7 +322,14 @@
 					this.findcat[i].headImg = url.tempFilePath
 					// console.log(this.findcat)
 				}
+				
+				this.getLocation()
+				
 				this.$forceUpdate()
+				if (this.load) {
+					this.load = false
+				}
+				
 				
 				
 			}

@@ -1,6 +1,7 @@
 <template>
 	<view class="home">
 		<view class="card-bottom">
+			 <view v-if="alldata.length == 0" style=" text-align: center;">-- 暂无更多 --</view>
 			<!-- 顶部分页栏 -->
 			<!-- <view class="top-tab">
 				<view :class="['tab-item flex-center', activeTab == index ? 'active' : '']" @tap="handleTab(index)" v-for="(item, index) in tabList" :key="index">{{ item.title }}</view>
@@ -29,6 +30,11 @@
 			<!-- 右下角按钮 -->
 			<y-Fab :bottom="140" :right="40" :btnList="fabList" @click="handleFab" />
 		</view>
+		<cl-toast ref="toast"  ></cl-toast>
+		<cl-loading-mask v-if="load" :loading="true" text="拼命加载中">
+			
+		</cl-loading-mask>
+		<!-- <view style="margin-top: 20rpx; text-align: center;">-- 暂无更多 --</view> -->
 	</view>
 </template>
 
@@ -50,6 +56,8 @@ export default {
 	// },
 	data() {
 		return {
+			// msg: false,
+			load: true,
 			startNum: 0,
 			activeTab: 0,
 			// tab的名称
@@ -83,10 +91,22 @@ export default {
 		};
 	},
 	onShow() {
+		this.load = true
 		this.alldata = []
 		that = this;
 		// that.loadData('add');
-		that.getdata()
+		console.log('open',uni.getStorageSync('openid') == '')
+		if (uni.getStorageSync('openid') == undefined ||uni.getStorageSync('openid') == '' ) {
+			this.load = false
+			 this.$refs["toast"].open({
+			          message: "请先到 ‘我的’ 页面进行登陆",
+					  position: "middle",
+					  
+			        })
+			
+		} else {
+			that.getdata()
+		}
 	},
 	onLoad() {
 		
@@ -126,9 +146,13 @@ export default {
 				
 				var forumitem = await forum.doc(data.id).get()
 				forumitem.data.like = data.likeforum
+				var likelist = forumitem.data.likes
+				console.log(likelist)
+				likelist.push(uni.getStorageSync('openid'))
 				forum.doc(data.id).update({
 					data: {
-						like: data.likenum+1
+						like: data.likenum+1,
+						likes: likelist
 					},
 					success: res => {
 						console.log(res)
@@ -171,7 +195,7 @@ export default {
 		},
 		async getdata () {
 			const forumdata = await forum.orderBy('date','desc').get({})
-			
+			console.log('a',forumdata)
 			for (var i=0; i<forumdata.data.length; i++) {
 				let item = {}
 				item.id = forumdata.data[i]._id
@@ -221,6 +245,8 @@ export default {
 			// alldata = forumdata.data
 			
 			console.log(this.alldata)
+			this.load = false
+			console.log(this.load)
 			
 		},
 		toDetails(id){

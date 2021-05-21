@@ -96,10 +96,10 @@ var components
 try {
   components = {
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     },
     selector: function() {
-      return Promise.all(/*! import() | components/selector/selector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/selector/selector")]).then(__webpack_require__.bind(null, /*! @/components/selector/selector.vue */ 49))
+      return Promise.all(/*! import() | components/selector/selector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/selector/selector")]).then(__webpack_require__.bind(null, /*! @/components/selector/selector.vue */ 50))
     }
   }
 } catch (e) {
@@ -156,7 +156,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 30));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 30));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
+//
+//
 //
 //
 //
@@ -214,7 +217,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 
 var db = wx.cloud.database();
-var adopt = db.collection('adopt');var selector = function selector() {Promise.all(/*! require.ensure | components/selector/selector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/selector/selector")]).then((function () {return resolve(__webpack_require__(/*! @/components/selector/selector.vue */ 49));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var adopt = db.collection('adopt');var selector = function selector() {Promise.all(/*! require.ensure | components/selector/selector */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/selector/selector")]).then((function () {return resolve(__webpack_require__(/*! @/components/selector/selector.vue */ 50));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 {
@@ -292,14 +295,17 @@ var adopt = db.collection('adopt');var selector = function selector() {Promise.a
     IsCard: function IsCard(e) {
       this.isCard = e.detail.value;
     },
-    getdata: function getdata() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var alldata;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
-                  adopt.orderBy('date', 'desc').get({}));case 2:alldata = _context3.sent;
+    getdata: function getdata() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var loca, alldata;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+                loca = uni.getStorageSync('location');_context3.next = 3;return (
+                  adopt.orderBy('date', 'desc').where({
+                    adoptLocation: loca }).
+                  get({}));case 3:alldata = _context3.sent;
 
 
                 console.log(alldata);
                 _this3.adoptdata = alldata.data;
 
-                _this3.getimgurl();case 6:case "end":return _context3.stop();}}}, _callee3);}))();
+                _this3.getimgurl();case 7:case "end":return _context3.stop();}}}, _callee3);}))();
 
     },
     getimgurl: function getimgurl() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var i, url;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
@@ -318,6 +324,7 @@ var adopt = db.collection('adopt');var selector = function selector() {Promise.a
                 _this4.ifloading = false;
                 // return url
               case 13:case "end":return _context4.stop();}}}, _callee4);}))();} } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

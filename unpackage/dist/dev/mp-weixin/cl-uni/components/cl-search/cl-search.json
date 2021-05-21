@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "cl-input": "/cl-uni/components/cl-input/cl-input",
+    "cl-button": "/cl-uni/components/cl-button/cl-button"
+  },
+  "component": true
+}

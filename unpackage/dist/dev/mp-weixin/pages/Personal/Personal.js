@@ -96,7 +96,7 @@ var components
 try {
   components = {
     clDialog: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-dialog/cl-dialog */ "cl-uni/components/cl-dialog/cl-dialog").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-dialog/cl-dialog.vue */ 245))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-dialog/cl-dialog */ "cl-uni/components/cl-dialog/cl-dialog").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-dialog/cl-dialog.vue */ 258))
     }
   }
 } catch (e) {
@@ -291,16 +291,17 @@ var _this = void 0;var _default =
         nexturl: '../Message/Message' },
 
       {
-        name: '关于我们',
+        name: '管理',
         icon: '../../static/images/personal/about.png',
         key: 6,
-        nexturl: '../Message/Message' }] };
+        nexturl: '../Management/Management' }] };
 
 
 
 
   },
   mounted: function mounted() {var _this2 = this;
+    console.log(this.$haveInfo);
     if (this.$haveInfo) {
       this.visible = false;
       var userdata = uni.getStorageSync('userInfo');
@@ -339,7 +340,8 @@ var _this = void 0;var _default =
                     data: {
                       name: _this3.userName,
                       avatarUrl: _this3.headImg,
-                      likeforum: [] } }).
+                      likeforum: [],
+                      ismanger: false } }).
 
                   then(function (res) {
                     console.log(res);

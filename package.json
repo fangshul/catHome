@@ -15,5 +15,8 @@
         "copy-webpack-plugin": "^5.1.1",
         "lodash": "^4.17.21",
         "mpvue-picker": "^2.1.6"
+    },
+    "devDependencies": {
+        "wgs2mars": "^2.0.0"
     }
 }

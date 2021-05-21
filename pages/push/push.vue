@@ -28,6 +28,7 @@
 			:text="loadingText">
 			
 		</cl-loading-mask>
+		<cl-toast ref="toast"></cl-toast>
 	</view>
 </template>
 
@@ -54,11 +55,40 @@
 					sizeType: ['original'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
-						if (that.imgList.length != 0) {
-							that.imgList = that.imgList.concat(res.tempFilePaths)
-						} else {
-							that.imgList = res.tempFilePaths
-						}
+						let imgurl = res
+						res.tempFilePaths.forEach(items => {
+							wx.getFileSystemManager().readFile({
+								filePath: items,
+								success: res => {
+									wx.cloud.callFunction({
+										name: 'imgSecCheck',
+										data:{
+											img: res.data
+										}
+									}).then(res => {
+										if (res.result.code == 200) {
+											if (that.imgList.length != 0) {
+												that.imgList = that.imgList.concat(imgurl.tempFilePaths)
+											} else {
+												that.imgList = imgurl.tempFilePaths
+											}
+											console.log("图片可以")
+										} else if (res.result.code == 500) {
+											console.log("图片不ok")
+											that.$refs["toast"].open({
+												type: "warning",
+												message: "内容含有违法违规内容",
+												position: "middle",
+												icon:"warning",
+												// duration: 100000
+												// type: 'warning'
+											})
+										}
+									})
+								}
+							})
+						})
+						
 					}
 				});
 			},
@@ -76,6 +106,10 @@
 				})
 			},
 			async push () {
+				var that = this
+				
+				// that.load = true
+				// 处理图片
 				var imgfildid = []
 				console.log(this.imgList)
 				console.log(this.content)
@@ -89,6 +123,9 @@
 					// console.log(imgurl)
 				}
 				
+				console.log(that.content)
+				
+				
 				if (this.content === '') {
 					this.$refs["toast"].open({
 						type: "warning",
@@ -98,47 +135,80 @@
 						
 					})
 				} else {
-					this.ifloading = true
-					this.loadingText = "发布中"
-					forum.add({
-						data:{
-							content: this.content,
-							viewed: 0,
-							imgList: imgfildid,
-							date: new Date(),
-							like: 0,
-							comment : []
+					that.ifloading = true
+					that.loadingText = "发布中"
+					
+					wx.cloud.callFunction({
+						name: "checkStr",
+						data: {
+							inputText: that.content
+						},success (res) {
+							console.log('ok',res)
 							
-						},
-						success: res => {
-							this.ifloading = false
+							forum.add({
+								data:{
+									content: that.content,
+									viewed: 0,
+									imgList: imgfildid,
+									date: new Date(),
+									like: 0,
+									comment : [],
+									likes: []
+									
+								},
+								success: res => {
+									that.ifloading = false
+									
+									that.$refs["toast"].open({
+										type: "success",
+										message: "发布成功",
+										position: "middle",
+										icon:"success",
+										
+									})
+									uni.reLaunch({
+										url: '../Forum/Forum'
+									})
+									
+									
+								},
+								fail: err => {
+									that.ifloading = false
+									that.$refs["toast"].open({
+										type: "error",
+										message: "发布失败",
+										position: "middle",
+										icon:"error",
+										
+									})
+									console.log(err)
+								}
+							})
+						
 							
-							this.$refs["toast"].open({
-								type: "success",
-								message: "发布成功",
+						},fail (err) {
+							that.ifloading = false
+							that.content = ""
+							that.$refs["toast"].open({
+								type: "warning",
+								message: "内容含有违法违规内容",
 								position: "middle",
-								icon:"success",
-								
+								icon:"warning",
+								// duration: 100000
+								// type: 'warning'
 							})
-							uni.reLaunch({
-								url: '../Forum/Forum'
-							})
-							
-							
-						},
-						fail: err => {
-							this.ifloading = false
-							this.$refs["toast"].open({
-								type: "error",
-								message: "发布失败",
-								position: "middle",
-								icon:"error",
-								
-							})
-							console.log(err)
+							// console.log('err',err)
 						}
 					})
+					
+					
+					
 				}
+				
+				
+			
+				
+				
 			}
 		}
 	}

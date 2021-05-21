@@ -93,10 +93,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uniList: function() {
+      return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 129))
+    },
+    uniListChat: function() {
+      return __webpack_require__.e(/*! import() | components/uni-list-chat/uni-list-chat */ "components/uni-list-chat/uni-list-chat").then(__webpack_require__.bind(null, /*! @/components/uni-list-chat/uni-list-chat.vue */ 290))
+    },
+    clLoadingMask: function() {
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.ifforum
+    ? _vm.__map(_vm.foruminfo, function(item, index) {
+        var $orig = _vm.__get_orig(item)
+
+        var g0 = item.date.getMonth()
+        var g1 = item.date.getDate()
+        return {
+          $orig: $orig,
+          g0: g0,
+          g1: g1
+        }
+      })
+    : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -130,7 +180,92 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 30));var _data$onShow$methods$;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -199,30 +334,43 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 
-var db = wx.cloud.database();var _default =
-{
+var db = wx.cloud.database();
+
+var adopt = db.collection('adopt');
+var findcat = db.collection('findCat');
+var forum = db.collection('forum');var _default = (_data$onShow$methods$ = {
+
+
   data: function data() {
     return {
+      load: true,
+      ifadopt: true,
+      iffindcat: false,
+      ifforum: false,
+      adoptinfo: '',
+      findCatinfo: '',
+      foruminfo: '',
+      id: '',
       nickname: "",
       headImg: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn11%2F600%2Fw700h700%2F20180424%2F514b-fzqvvsa3694420.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622959077&t=b701606d5bdedcef64ca889f3d23acd0',
       status: [{
         key: 1,
         name: '领养',
-        url: '../../static/images/personal/adopt.png',
-        nexturl: '../myAdopt/myAdopt' },
-
+        url: '../../static/images/personal/adopt.png'
+        // nexturl: 'getadopt'
+      },
       {
         key: 2,
         name: '寻猫',
-        url: '../../static/images/personal/findcat.png',
-        nexturl: '../myFindcat/myFindcat' },
-
+        url: '../../static/images/personal/findcat.png'
+        // nexturl: 'getfindcat'
+      },
       {
         key: 3,
         name: '讨论',
-        url: '../../static/images/personal/message.png',
-        nexturl: '../myForum/myForum' }],
-
+        url: '../../static/images/personal/message.png'
+        // nexturl: 'getforum'
+      }],
 
 
       menus: [
@@ -243,22 +391,97 @@ var db = wx.cloud.database();var _default =
 
 
   },
-  methods: {},
-
-
-  onLoad: function onLoad(option) {var _this = this;
-    console.log(option);
-    db.collection('user').where({
-      _openid: option.id }).
-
-    get({}).then(function (res) {
-      console.log(res);
-      _this.headImg = res.data[0].avatarUrl;
-      _this.nickname = res.data[0].name;
-
-    });
+  onShow: function onShow() {
+    // this.getadopt()
   },
-  computed: {} };exports.default = _default;
+  methods: {
+    getimgurl: function getimgurl() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var i, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                i = 0;case 1:if (!(i < _this.adoptinfo.length)) {_context.next = 11;break;}_context.next = 4;return (
+                  wx.cloud.downloadFile({
+                    fileID: _this.adoptinfo[i].imgList[0] // 文件 ID
+                  }));case 4:url = _context.sent;
+
+
+                console.log(url.tempFilePath);
+                _this.adoptinfo[i].headImg = url.tempFilePath;
+
+                _this.$forceUpdate();case 8:i++;_context.next = 1;break;case 11:
+
+                console.log(_this.adoptinfo);
+                _this.load = false;
+                // return url
+              case 13:case "end":return _context.stop();}}}, _callee);}))();},
+    getdata: function getdata(data) {
+      console.log('key', data);
+      if (data == 0) {
+        this.ifadopt = true;
+        this.iffindcat = false;
+        this.ifforum = false;
+        this.getadopt();
+      } else if (data == 1) {
+        this.ifadopt = false;
+        this.iffindcat = true;
+        this.ifforum = false;
+        // this.getfindcat()
+      } else if (data == 2) {
+        this.ifadopt = false;
+        this.iffindcat = false;
+        this.ifforum = true;
+        // this.getforum()
+      }
+    },
+    getadopt: function getadopt() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var adoptdata;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this2.load = true;_context2.next = 3;return (
+                  adopt.where({
+                    _openid: _this2.id }).
+                  get());case 3:adoptdata = _context2.sent;
+
+                _this2.adoptinfo = adoptdata.data;
+                console.log('adopt', _this2.adoptinfo);
+
+                _this2.getimgurl();case 7:case "end":return _context2.stop();}}}, _callee2);}))();
+
+    },
+    getfindcat: function getfindcat() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var findcatdata;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
+                  findcat.where({
+                    _openid: _this3.id }).
+                  get());case 2:findcatdata = _context3.sent;
+
+                _this3.findCatinfo = findcatdata;
+                console.log(findcatdata);case 5:case "end":return _context3.stop();}}}, _callee3);}))();
+    },
+    getforum: function getforum() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var forumdata;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:_context4.next = 2;return (
+
+                  forum.where({
+                    _openid: _this4.id }).
+                  get());case 2:forumdata = _context4.sent;
+
+                _this4.foruminfo = forumdata;
+                console.log(forumdata);case 5:case "end":return _context4.stop();}}}, _callee4);}))();
+    } },
+
+  onLoad: function onLoad(option) {var _this5 = this;
+    this.id = option.id;
+    console.log(option);
+    db.collection('user').doc(this.id).get({}).then(function (res) {
+      console.log('userinfo', res);
+      _this5.headImg = res.data.avatarUrl;
+      _this5.nickname = res.data.name;
+    });
+    // db.collection('user').where({
+    //   _openid: option.id
+
+    // }).get({}).then(res => {
+    // 	console.log(res)
+    // 	this.headImg = res.data[0].avatarUrl
+    // 	this.nickname = res.data[0].name
+
+    // })
+  } }, _defineProperty(_data$onShow$methods$, "onShow", function onShow()
+{
+
+}), _defineProperty(_data$onShow$methods$, "computed",
+{}), _data$onShow$methods$);exports.default = _default;
 
 /***/ }),
 

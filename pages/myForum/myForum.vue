@@ -26,6 +26,7 @@
 		<cl-loading-mask v-if="load" :loading="true" text="拼命加载中">
 			
 		</cl-loading-mask>
+		<!-- <view style="margin-top: 20rpx; text-align: center;">-- 暂无更多 --</view> -->
 	</view>
 </template>
 
@@ -104,13 +105,18 @@
 			},
 			async getimg () {
 				for (var i=0;i<this.listdata.length;i++) {
-					var url = await wx.cloud.downloadFile({
-								  fileID: this.listdata[i].imgList[0], // 文件 ID
-								  
-								})
-								
-					console.log(url.tempFilePath)
-					this.listdata[i].headImg = url.tempFilePath
+					if (this.listdata[i].imgList.length == 0) {
+							this.listdata[i].headImg = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn11%2F600%2Fw700h700%2F20180424%2F514b-fzqvvsa3694420.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622959077&t=b701606d5bdedcef64ca889f3d23acd0'
+					} else {
+						var url = await wx.cloud.downloadFile({
+									  fileID: this.listdata[i].imgList[0], // 文件 ID
+									  
+									})
+									
+						console.log(url.tempFilePath)
+						this.listdata[i].headImg = url.tempFilePath
+					}
+					
 					
 					
 				}

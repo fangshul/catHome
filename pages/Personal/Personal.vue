@@ -136,16 +136,17 @@
 						nexturl: '../Message/Message'
 					},
 					{
-						name: '关于我们',
+						name: '管理',
 						icon: '../../static/images/personal/about.png',
 						key: 6,
-						nexturl: '../Message/Message'
+						nexturl: '../Management/Management'
 					}
 
 				]
 			};
 		},
 		mounted() {
+			console.log(this.$haveInfo)
 			if (this.$haveInfo) {
 				this.visible = false
 				var userdata = uni.getStorageSync('userInfo')
@@ -184,7 +185,8 @@
 						data:{
 							  name:  this.userName,
 							  avatarUrl:  this.headImg ,
-							  likeforum: []
+							  likeforum: [],
+							  ismanger: false
 						  }
 					}).then(res => {
 						console.log(res)

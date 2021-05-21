@@ -93,6 +93,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    clLoadingMask: function() {
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -130,264 +153,342 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 30));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var db = wx.cloud.database();
-var todos = db.collection('findCat');
-var adopt = db.collection('adopt');var carousel = function carousel() {__webpack_require__.e(/*! require.ensure | components/vear-carousel/vear-carousel */ "components/vear-carousel/vear-carousel").then((function () {return resolve(__webpack_require__(/*! @/components/vear-carousel/vear-carousel */ 193));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-{
-  components: {
-    carousel: carousel },
-
-  data: function data() {
-    return {
-      title: 'Hello',
-      imgList: [{
-        url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3488207672,3352446836&fm=26&gp=0.jpg',
-        id: 1 },
-      {
-        url: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2653786338,2258592089&fm=26&gp=0.jpg',
-        id: 2 },
-      {
-        url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3440678884,1757659684&fm=26&gp=0.jpg',
-        id: 3 }],
-
-      findcat: [],
-      adoptdata: [] };
-
-  },
-  onShow: function onShow() {
-    console.log('onshow');
-    this.getfindcatdata();
-    this.getadoptdata();
-  },
-  onLoad: function onLoad() {
-    console.log('onload');
-
-  },
-  methods: {
-    // 点击轮播图
-    selectedBanner: function selectedBanner(item, index) {
-      console.log('', item, index);
-    },
-    getadoptdata: function getadoptdata() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var alladoptdata, adoptmax, i, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-                  adopt.orderBy('date', 'desc').get({}));case 2:alladoptdata = _context.sent;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 30));
 
 
 
-                if (alladoptdata.data.length > 3) {
-                  adoptmax = 3;
-                } else {
-                  adoptmax = alladoptdata.data.length;
-                }
-                console.log(alladoptdata);
-                i = 0;case 6:if (!(i < adoptmax)) {_context.next = 15;break;}
-                _this.adoptdata.push(alladoptdata.data[i]);_context.next = 10;return (
 
-                  wx.cloud.downloadFile({
-                    fileID: alladoptdata.data[i].imgList[0] // 文件 ID
-                  }));case 10:url = _context.sent;
 
-                // console.log(url)
-                _this.adoptdata[i].headImg = url.tempFilePath;
-                // console.log(this.findcat)
-              case 12:i++;_context.next = 6;break;case 15:
 
-                _this.$forceUpdate();
-                // this.adoptdata = alldata.data
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 49));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var db = wx.cloud.database();var todos = db.collection('findCat');var adopt = db.collection('adopt');var carousel = function carousel() {__webpack_require__.e(/*! require.ensure | components/vear-carousel/vear-carousel */ "components/vear-carousel/vear-carousel").then((function () {return resolve(__webpack_require__(/*! @/components/vear-carousel/vear-carousel */ 206));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { carousel: carousel }, data: function data() {return { load: '', title: 'Hello', imgList: [{ url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3488207672,3352446836&fm=26&gp=0.jpg', id: 1 }, { url: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2653786338,2258592089&fm=26&gp=0.jpg', id: 2 }], findcat: [], adoptdata: [] };}, onShow: function onShow() {this.load = true;this.findcat = [];this.adoptdata = []; // 加载寻猫
+    this.getfindcatdata(); // 加载领养
+    this.getadoptdata();}, onLoad: function onLoad() {var _this2 = this;var _this = this; // wx.openSetting({
+    // var transform = require('wgs2mars');
+    // var gcjloc = transform(119.3122312,26.0240049);	
+    // // }) 
+    // console.log('city',gcjloc)
+    // uni.getLocation({
+    //     type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+    //     success:(res)=>{
+    // 		let that=this
+    //         const latitude = res.latitude;
+    //         const longitude = res.longitude;
+    // 		console.log(res)
+    //         uni.request({
+    // 			header:{
+    // 				"Content-Type": "application/text"
+    // 			},
+    // 			//注意:这里的key值需要高德地图的 web服务生成的key  只有web服务才有逆地理编码
+    // 			url:'https://restapi.amap.com/v3/geocode/regeo?output=JSON&location='+res.longitude+','+res.latitude+'&key=280802ed0116fef931dbcf5e7e9278d7&radius=1000&extensions=all',
+    // 			success(re) {
+    // 				console.log(re)
+    // 				if(re.statusCode===200){
+    // 					// that.citydata=re.data.regeocode.addressComponent.city
+    // 					// re.data.regeocode.addressComponent.province
+    // 					// console.log("获取中文街道地理位置成功",that.citydata)
+    // 					// _this.$city = re.data.regeocode.addressComponent.city
+    // 					// _this.$province = re.data.regeocode.addressComponent.province
+    // 					uni.setStorageSync('city',re.data.regeocode.addressComponent.city)
+    // 					uni.setStorageSync('province',re.data.regeocode.addressComponent.province)
+    // 					// console.log(_this.$city)
+    // 					// console.log(_this.$province)
+    // 				}else{
+    // 					console.log("获取信息失败，请重试！")
+    // 				}
+    // 			 }
+    // 		});
+    //     }
+    // });
+    wx.getLocation({ type: 'wgs84', success: function success(res) {console.log(res);var latitude = res.latitude;var longitude = res.longitude;var speed = res.speed;var accuracy = res.accuracy;_this.getProvinceName(latitude, longitude);} }); // 轮播图
+    wx.cloud.downloadFile({ fileID: 'cloud://cloud1-4grgkkd40c94fb6a.636c-cloud1-4grgkkd40c94fb6a-1305831904/lunbo.png', // 文件 ID
+      success: function success(res) {console.log(res.tempFilePath);_this2.imgList.push({ url: res.tempFilePath, id: 3 });} });}, methods: { getLocation: function getLocation() {for (var m = 0; m < this.findcat.length; m++) {var data = this.findcat[m].lostLocation;for (var i = 0; i < _areaDataMin.default.length; i++) {if (_areaDataMin.default[i].value == data[0]) {for (var j = 0; j < _areaDataMin.default[i].children.length; j++) {if (_areaDataMin.default[i].children[j].value == data[1]) {this.findcat[m].loca = _areaDataMin.default[i].children[j].label;console.log(this.findcat[m].loca); // this.province = areaData[i].label
+                // break
+              }}}}}}, getProvinceName: function getProvinceName(latitude, longitude) {wx.request({ url: 'https://apis.map.qq.com/ws/geocoder/v1/?location=' + latitude + ',' + longitude + '&key=4W2BZ-WTC3J-IC4FD-KFYJG-63EF6-K2FAA', data: {}, success: function success(res) {console.log('now', res);uni.setStorageSync('city', res.data.result.address_component.city);uni.setStorageSync('province', res.data.result.address_component.province); // res.data.result.address_component.province   就是我要获取的省份了；
+          // });
+        } });}, // 点击轮播图
+    selectedBanner: function selectedBanner(item, index) {console.log('', item, index);}, getadoptdata: function getadoptdata() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var alladoptdata, adoptmax, i, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return adopt.orderBy('date', 'desc').get({});case 2:alladoptdata = _context.sent;if (alladoptdata.data.length > 3) {adoptmax = 3;} else {adoptmax = alladoptdata.data.length;}console.log(alladoptdata);i = 0;case 6:if (!(i < adoptmax)) {_context.next = 15;break;}_this3.adoptdata.push(alladoptdata.data[i]);_context.next = 10;return wx.cloud.downloadFile({ fileID: alladoptdata.data[i].imgList[0] // 文件 ID
+                });case 10:url = _context.sent; // console.log(url)
+                _this3.adoptdata[i].headImg = url.tempFilePath; // console.log(this.findcat)
+              case 12:i++;_context.next = 6;break;case 15:_this3.$forceUpdate(); // this.adoptdata = alldata.data
                 // this.getimgurl()
-              case 16:case "end":return _context.stop();}}}, _callee);}))();
-    },
-    getfindcatdata: function getfindcatdata() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var alldata, max, i, url;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
-                  todos.orderBy('date', 'desc').get({}));case 2:alldata = _context2.sent;
-
-
-                console.log(alldata);
-
-                if (alldata.data.length > 3) {
-                  max = 3;
-                } else {
-                  max = alldata.data.length;
-                }
-                // console.log(max)
-                i = 0;case 6:if (!(i < max)) {_context2.next = 15;break;}
-                _this2.findcat.push(alldata.data[i]);_context2.next = 10;return (
+                if (_this3.load) {_this3.load = false;}case 17:case "end":return _context.stop();}}}, _callee);}))();}, getfindcatdata: function getfindcatdata() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var alldata, max, i, url;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return todos.orderBy('date', 'desc').get({});case 2:alldata = _context2.sent;console.log('find', alldata);if (alldata.data.length > 3) {max = 3;} else {max = alldata.data.length;} // console.log(max)
+                i = 0;case 6:if (!(i < max)) {_context2.next = 15;break;}_this4.findcat.push(alldata.data[i]);_context2.next = 10;return (
 
                   wx.cloud.downloadFile({
                     fileID: alldata.data[i].imgList[0] // 文件 ID
                   }));case 10:url = _context2.sent;
 
                 // console.log(url)
-                _this2.findcat[i].headImg = url.tempFilePath;
+                _this4.findcat[i].headImg = url.tempFilePath;
                 // console.log(this.findcat)
               case 12:i++;_context2.next = 6;break;case 15:
-                _this2.$forceUpdate();case 16:case "end":return _context2.stop();}}}, _callee2);}))();
+
+                _this4.getLocation();
+
+                _this4.$forceUpdate();
+                if (_this4.load) {
+                  _this4.load = false;
+                }case 18:case "end":return _context2.stop();}}}, _callee2);}))();
+
 
 
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

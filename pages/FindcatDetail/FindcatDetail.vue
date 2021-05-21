@@ -71,7 +71,11 @@
 			<view class="masterInfo"  @click="gotoCenter">
 				<!-- <view > -->
 					<view>
-						<view class=" masterImg cu-avatar xl round margin-left" :style="'background-image:url('+headimg+');'"></view>
+						<!-- <view class=" masterImg cu-avatar xl round margin-left" :style="'background-image:url('+headimg+');'"></view> -->
+						<view
+							class=" masterImg cu-avatar xl round margin-left" 
+							:style='"background-image:url("+ findcatdata.masterImg +");"'>
+						</view>
 						<view class="mastername">
 							{{ findcatdata.masterName }}
 							<view class="buttonbox">
@@ -202,7 +206,7 @@
 				// this.disphone = this.findcatdata.disphone
 				// console.log(this.disphone)
 				// console.log(catType)
-				this.type = catType[this.findcatdata.petType].label
+				// this.type = catType[this.findcatdata.petType].label
 				this.getimgurl()
 				this.getLocation(this.findcatdata.lostLocation)
 				this.getdate(this.findcatdata.date)
@@ -258,6 +262,7 @@
 							if (areaData[i].children[j].value == data[1]) {
 								this.location = areaData[i].children[j].label
 								this.province = areaData[i].label
+								break
 							}
 						}
 					}

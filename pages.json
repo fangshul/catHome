@@ -4,7 +4,10 @@
 		"custom": {
 			"^y-(.*)": "@/components/y-$1/y-$1.vue", //以此组件命名方式的可以在页面中直接使用不需要引用注册
 			
-			"^cl-(.*)": "@/cl-uni/components/cl-$1/cl-$1.vue"
+			"^cl-(.*)": "@/cl-uni/components/cl-$1/cl-$1.vue",
+			
+			"^uni-(.*)": "@/components/uni-$1/uni-$1.vue",
+			"^qiun-(.*)": "@/components/qiun-$1/qiun-$1.vue"
 			
 		}
 	},
@@ -16,6 +19,7 @@
 	// 		"cl-(.*)": "cl-uni/components/cl-$1/cl-$1.vue"
 	// 	}
 	// },
+	
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
@@ -138,7 +142,7 @@
             "path" : "pages/Message/Message",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我的消息",
                 "enablePullDownRefresh": false
             }
             
@@ -165,12 +169,26 @@
             "path" : "pages/personalCenter/personalCenter",
             "style" :                                                                                    
             {
+                "navigationBarTitleText": "TA的主页",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/Management/Management",
+            "style" :                                                                                    
+            {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             
         }
     ],
+	"permission": {
+	    "scope.userLocation": {
+	      "desc": "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
+	    }
+	  },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

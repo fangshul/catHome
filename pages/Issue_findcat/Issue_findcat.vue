@@ -1,7 +1,9 @@
 <template>
 	<view class="body">
 		<view class="addImg">
-			<robby-image-upload @add="updateImg"  limit="6" :value="imageData"></robby-image-upload>
+			<robby-image-upload 
+				@delete = "deleteimg"
+				@add="updateImg"  limit="6" :value="imageData"></robby-image-upload>
 			<view class="addimgtext">添加宠物照片</view>
 			<view class="addimgnode"><text class="cuIcon-info"></text>最多只能添加6张图片</view>
 		</view>
@@ -136,7 +138,7 @@
 							type: 'input', // 表单项的类型 这里是输入框
 							inputType: 'number', // 输入框的类型,有 text number digit textarea
 							password: false, // 是否为密码输入框
-							placeholder: '此处没有填写则为年龄不详', // 提示信息
+							placeholder: '请填写宠物年龄', // 提示信息
 							disabled: false, // 是否禁用
 							maxLength: 10 // 最大输入长度
 						},
@@ -206,7 +208,8 @@
 							password: false, // 是否为密码输入框
 							placeholder: '请输入您的手机号', // 提示信息
 							disabled: false, // 是否禁用
-							maxLength: 11 // 最大输入长度
+							maxLength: 11, // 最大输入长度
+							
 						},
 						{
 							label: '微信', // 表单显示名称
@@ -227,7 +230,8 @@
 					]
 				},
 				imgs:[],
-				tmpimgdata: []
+				tmpimgdata: [],
+				masterImg: ''
 			}
 		},
 		components: {
@@ -236,12 +240,24 @@
 			LbPicker
 		
 		},
-		mounted() {
-			
+		onShow () {
 			this.getnowTime()
 			this.lostdate = this.nowdate
 			this.losttime = this.nowtime
-			this.catlist = catdata.splice(1)
+			this.catlist = catdata.slice(1)
+			console.log('catdata',this.catlist)
+			var that = this
+			db.collection('user').where({
+			  _openid: uni.getStorageSync('openid')
+			  
+			}).get().then(res => {
+				console.log(res.data[0].avatarUrl)
+				
+				that.masterImg = res.data[0].avatarUrl
+			})
+		},
+		mounted() {
+			
 		},
 		methods: {
 			getnowTime () {
@@ -256,42 +272,68 @@
 			updateImg(data) {
 				// console.log('/findCat/'+randomName()+'.png')
 				// var tmpimgdata = []
-				this.ifloading = true
-				this.loadingText = "上传图片中..."
+				// this.ifloading = true
+				// this.loadingText = "上传图片中..."
+				data.currentImages.forEach(items => {
+					wx.cloud.uploadFile({
+					  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+					  filePath: items, // 小程序临时文件路径
+					 
+					})
+					.then(res => {
+						console.log('fileid',res)
+						this.tmpimgdata.push(res.fileID)
+						// this.ifloading = false
+						
+					})
+				})
 				console.log(data.currentImages.length)
-				for (var i=0;i<data.currentImages.length;i++) {
-					console.log(i)
-					if (i == data.currentImages.length-1) {
-						wx.cloud.uploadFile({
-						  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
-						  filePath: data.currentImages[i], // 小程序临时文件路径
+				// for (var i=0;i<data.currentImages.length;i++) {
+				// 	console.log(i)
+				// 	if (i == data.currentImages.length-1) {
+				// 		wx.cloud.uploadFile({
+				// 		  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+				// 		  filePath: data.currentImages[i], // 小程序临时文件路径
 						 
-						})
-						.then(res => {
+				// 		})
+				// 		.then(res => {
 							
-							this.tmpimgdata.push(res.fileID)
-							this.ifloading = false
+				// 			this.tmpimgdata.push(res.fileID)
+				// 			this.ifloading = false
 							
-						})
-					} else {
-						wx.cloud.uploadFile({
-						  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
-						  filePath: data.currentImages[i], // 小程序临时文件路径
+				// 		})
+				// 	} else {
+				// 		wx.cloud.uploadFile({
+				// 		  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+				// 		  filePath: data.currentImages[i], // 小程序临时文件路径
 						 
-						})
-						.then(res => {
-							this.tmpimgdata.push(res.fileID)
-						})
-					}
+				// 		})
+				// 		.then(res => {
+				// 			this.tmpimgdata.push(res.fileID)
+				// 		})
+				// 	}
 					
-				}
+				// }
 				// this.ifloading = true
 				
 				// this.imgs = data.allImages
 				
 				
 			},
-			
+			deleteimg(data) {
+				console.log('delete',data)
+				let fileid = this.tmpimgdata[data.imgindex]
+				console.log(fileid)
+				let x = []
+				x.push(fileid)
+				this.tmpimgdata.splice(data.imgindex, 1) 
+				
+				wx.cloud.deleteFile({
+				  fileList:x
+				}).then(res=> {
+					console.log(res)
+				})
+			},
 			getData() {
 				// this.a()
 				// console.log(this.imgs)
@@ -344,7 +386,7 @@
 						icon:"warning",
 						
 					})
-				} else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
+				}  else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
 					// 没有送养人信息
 					this.$refs["toast"].open({
 						type: "warning",
@@ -353,10 +395,19 @@
 						icon:"warning",
 						
 					})
+				} else if (master.peoplephone.length < 11) {
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请填写正确的手机号码",
+						position: "middle",
+						icon:"warning",
+						
+					})
 				} else {
 					this.ifloading = true
 					findcat.add({
 						data:{
+							masterImg:  this.masterImg,
 							imgList:this.tmpimgdata,
 							date: new Date(),
 							lostLocation: this.value2,

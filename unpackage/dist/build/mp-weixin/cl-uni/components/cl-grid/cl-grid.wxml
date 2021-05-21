@@ -1,0 +1,1 @@
+<view class="{{['cl-grid',classList]}}" style="{{'border:'+(border)+';'}}"><slot></slot></view>

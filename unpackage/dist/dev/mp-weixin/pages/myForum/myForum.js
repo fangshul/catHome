@@ -279,10 +279,10 @@ var components
 try {
   components = {
     uniIcons: function() {
-      return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 304))
+      return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 312))
     },
     uniBadge: function() {
-      return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 312))
+      return __webpack_require__.e(/*! import() | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then(__webpack_require__.bind(null, /*! @/components/uni-badge/uni-badge.vue */ 320))
     }
   }
 } catch (e) {
@@ -339,7 +339,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! ../uni-icons/uni-icons.vue */ 304));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniBadge = function uniBadge() {__webpack_require__.e(/*! require.ensure | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then((function () {return resolve(__webpack_require__(/*! ../uni-badge/uni-badge.vue */ 312));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! ../uni-icons/uni-icons.vue */ 312));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniBadge = function uniBadge() {__webpack_require__.e(/*! require.ensure | components/uni-badge/uni-badge */ "components/uni-badge/uni-badge").then((function () {return resolve(__webpack_require__(/*! ../uni-badge/uni-badge.vue */ 320));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -709,16 +709,16 @@ try {
       return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 129))
     },
     uniListChat: function() {
-      return __webpack_require__.e(/*! import() | components/uni-list-chat/uni-list-chat */ "components/uni-list-chat/uni-list-chat").then(__webpack_require__.bind(null, /*! @/components/uni-list-chat/uni-list-chat.vue */ 282))
+      return __webpack_require__.e(/*! import() | components/uni-list-chat/uni-list-chat */ "components/uni-list-chat/uni-list-chat").then(__webpack_require__.bind(null, /*! @/components/uni-list-chat/uni-list-chat.vue */ 290))
     },
     clIcon: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-icon/cl-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-icon/cl-icon")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-icon/cl-icon.vue */ 289))
+      return Promise.all(/*! import() | cl-uni/components/cl-icon/cl-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-icon/cl-icon")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-icon/cl-icon.vue */ 297))
     },
     clConfirm: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-confirm/cl-confirm */ "cl-uni/components/cl-confirm/cl-confirm").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-confirm/cl-confirm.vue */ 299))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-confirm/cl-confirm */ "cl-uni/components/cl-confirm/cl-confirm").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-confirm/cl-confirm.vue */ 307))
     },
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     }
   }
 } catch (e) {
@@ -830,8 +830,10 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
 var _uniList = _interopRequireDefault(__webpack_require__(/*! @/components/uni-list/uni-list.vue */ 129));
 var _uniListItem = _interopRequireDefault(__webpack_require__(/*! @/components/uni-list-item/uni-list-item.vue */ 136));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
 //
 //
 //
@@ -877,8 +879,7 @@ var db = wx.cloud.database();var forum = db.collection('forum');var _default = {
                 //  that.getnotfind()()
                 // }
                 // console.log('delete',res)
-              } });} else {
-            console.log('can');
+              } });} else {console.log('can');
           }
           console.log(action);
         } });
@@ -900,21 +901,26 @@ var db = wx.cloud.database();var forum = db.collection('forum');var _default = {
 
     },
     getimg: function getimg() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var i, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                i = 0;case 1:if (!(i < _this3.listdata.length)) {_context.next = 10;break;}_context.next = 4;return (
+                i = 0;case 1:if (!(i < _this3.listdata.length)) {_context.next = 14;break;}if (!(
+                _this3.listdata[i].imgList.length == 0)) {_context.next = 6;break;}
+                _this3.listdata[i].headImg = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn11%2F600%2Fw700h700%2F20180424%2F514b-fzqvvsa3694420.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622959077&t=b701606d5bdedcef64ca889f3d23acd0';_context.next = 11;break;case 6:_context.next = 8;return (
+
                   wx.cloud.downloadFile({
                     fileID: _this3.listdata[i].imgList[0] // 文件 ID
-                  }));case 4:url = _context.sent;
+                  }));case 8:url = _context.sent;
 
 
                 console.log(url.tempFilePath);
-                _this3.listdata[i].headImg = url.tempFilePath;case 7:i++;_context.next = 1;break;case 10:
+                _this3.listdata[i].headImg = url.tempFilePath;case 11:i++;_context.next = 1;break;case 14:
+
+
 
 
 
                 _this3.load = false;
                 _this3.$forceUpdate();
                 // console.log(this.info)
-              case 12:case "end":return _context.stop();}}}, _callee);}))();} } };exports.default = _default;
+              case 16:case "end":return _context.stop();}}}, _callee);}))();} } };exports.default = _default;
 
 /***/ }),
 

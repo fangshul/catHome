@@ -96,22 +96,22 @@ var components
 try {
   components = {
     robbyImageUpload: function() {
-      return __webpack_require__.e(/*! import() | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then(__webpack_require__.bind(null, /*! @/components/robby-image-upload/robby-image-upload.vue */ 262))
+      return __webpack_require__.e(/*! import() | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then(__webpack_require__.bind(null, /*! @/components/robby-image-upload/robby-image-upload.vue */ 270))
     },
     clFilterBar: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-filter-bar/cl-filter-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-bar/cl-filter-bar")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-bar/cl-filter-bar.vue */ 205))
+      return Promise.all(/*! import() | cl-uni/components/cl-filter-bar/cl-filter-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-bar/cl-filter-bar")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-bar/cl-filter-bar.vue */ 213))
     },
     clFilterItem: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-filter-item/cl-filter-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-item/cl-filter-item")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-item/cl-filter-item.vue */ 210))
+      return Promise.all(/*! import() | cl-uni/components/cl-filter-item/cl-filter-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-filter-item/cl-filter-item")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-filter-item/cl-filter-item.vue */ 218))
     },
     clTextarea: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-textarea/cl-textarea */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-textarea/cl-textarea")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-textarea/cl-textarea.vue */ 269))
+      return Promise.all(/*! import() | cl-uni/components/cl-textarea/cl-textarea */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-textarea/cl-textarea")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-textarea/cl-textarea.vue */ 277))
     },
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     },
     clToast: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 250))
+      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 253))
     }
   }
 } catch (e) {
@@ -249,8 +249,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _randomName = _interopRequireDefault(__webpack_require__(/*! ../../static/randomName.js */ 96));
-var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 54));
+var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 49));
 
 
 var _cat = _interopRequireDefault(__webpack_require__(/*! ../../static/cat.js */ 55));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
@@ -331,7 +347,23 @@ var _cat = _interopRequireDefault(__webpack_require__(/*! ../../static/cat.js */
 //
 //
 //
-var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/lb-picker/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/lb-picker/index")]).then((function () {return resolve(__webpack_require__(/*! @/components/lb-picker */ 216));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var VForm = function VForm() {__webpack_require__.e(/*! require.ensure | components/venus-form/v-form */ "components/venus-form/v-form").then((function () {return resolve(__webpack_require__(/*! @/components/venus-form/v-form.vue */ 275));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var robbyImageUpload = function robbyImageUpload() {__webpack_require__.e(/*! require.ensure | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then((function () {return resolve(__webpack_require__(/*! @/components/robby-image-upload/robby-image-upload.vue */ 262));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { value2: '', peopleInfo: { peoplename: '', peoplephone: '', peoplewechat: '', disphone: false }, cattype: "", ifloading: false, loadingText: "", label2: '选择所在城市', list1: _areaDataMin.default, imageData: [], catlist: '', citydata: '', detailLocation: '', tmpimgdata: [], formDefinition: { fields: [{ label: '昵称', // 表单显示名称
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/lb-picker/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/lb-picker/index")]).then((function () {return resolve(__webpack_require__(/*! @/components/lb-picker */ 224));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var VForm = function VForm() {__webpack_require__.e(/*! require.ensure | components/venus-form/v-form */ "components/venus-form/v-form").then((function () {return resolve(__webpack_require__(/*! @/components/venus-form/v-form.vue */ 283));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var robbyImageUpload = function robbyImageUpload() {__webpack_require__.e(/*! require.ensure | components/robby-image-upload/robby-image-upload */ "components/robby-image-upload/robby-image-upload").then((function () {return resolve(__webpack_require__(/*! @/components/robby-image-upload/robby-image-upload.vue */ 270));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { url: '', value2: '', peopleInfo: { peoplename: '', peoplephone: '', peoplewechat: '', disphone: false }, cattype: "", ifloading: false, loadingText: "", label2: '选择所在城市', list1: _areaDataMin.default, imageData: [], catlist: '', citydata: '', detailLocation: '', tmpimgdata: [], formDefinition: { fields: [{ label: '昵称', // 表单显示名称
           name: 'name', // 每个表单项的唯一标识(不能重复)
           type: 'input', // 表单项的类型 这里是输入框
           inputType: 'text', // 输入框的类型,有 text number digit textarea
@@ -359,25 +391,10 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
         }, { label: 'TA的故事', // 表单显示名称
           name: 'sorry', // 每个表单项的唯一标识(不能重复)
           type: 'input', // 表单项的类型 这里是输入框
-          inputType: 'textarea', password: false, placeholder: '请输入宠物描述、送养原因...', disabled: false, maxLength: -1 }, { label: '领养条件', name: 'condition',
-          type: 'checkbox', // 表单项的类型 这里是多选框类型
-          options: [
-          {
-            label: '仅限同城', // 展示的名称
+          inputType: 'textarea', password: false, placeholder: '请输入宠物描述、送养原因...', disabled: false, maxLength: -1 }, { label: '领养条件', name: 'condition', type: 'checkbox', // 表单项的类型 这里是多选框类型
+          options: [{ label: '仅限同城', // 展示的名称
             value: 1 // 表单提交的值
-          },
-          {
-            label: '按时打疫苗',
-            value: 2 },
-
-          {
-            label: '同意适龄绝育',
-            value: 3 },
-
-          {
-            label: '不得遗弃、转让、贩卖、繁殖、虐待',
-            value: 4 },
-
+          }, { label: '按时打疫苗', value: 2 }, { label: '同意适龄绝育', value: 3 }, { label: '不得遗弃、转让、贩卖、繁殖、虐待', value: 4 },
           {
             label: '有防盗门，必须封网',
             value: 5 },
@@ -400,13 +417,13 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
 
           {
             label: '签订领养协议',
-            value: 10 },
+            value: 10 }
 
-          {
-            label: '按时打疫苗',
-            value: 11 }] }],
-
-
+          // {
+          //     label: '按时打疫苗',
+          //     value: 11
+          // }
+          ] }],
 
         showSubmitBtn: false, // 是否显示提交按钮
         showResetBtn: false // 是否显示重置按钮
@@ -447,6 +464,7 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
           disabled: false, // 是否禁用
           maxLength: 11 // 最大输入长度
         },
+
         {
           label: '微信', // 表单显示名称
           name: 'peoplewechat', // 每个表单项的唯一标识(不能重复)
@@ -462,9 +480,11 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
 
           name: 'disphone',
           type: 'switch' // 表单项的类型 这里是开关类型
-        }] } };
+        }] },
 
 
+      masterImg: '',
+      msaterid: '' };
 
   },
   components: {
@@ -473,14 +493,30 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
     LbPicker: LbPicker },
 
 
+  onShow: function onShow() {
+    this.catlist = _cat.default.slice(1);
+    var that = this;
+    db.collection('user').where({
+      _openid: uni.getStorageSync('openid') }).
+
+    get().then(function (res) {
+      console.log(res.data[0].avatarUrl);
+
+      that.masterImg = res.data[0].avatarUrl;
+      that.msaterid = res.data[0]._id;
+    });
+  },
   mounted: function mounted() {
-    this.catlist = _cat.default.splice(1);
   },
   methods: {
+    // pushimgs (res) {
+    // 	console.log(res)
+    // },
     onChange: function onChange() {
 
     },
     pushadopt: function pushadopt() {var _this = this;
+      console.log(this.$refs.pushimg);
       var cat = this.$refs.cat.data;
       var master = this.$refs.people.data;
       console.log("img", this.tmpimgdata);
@@ -490,7 +526,7 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
       console.log(this.value2);
       console.log(this.detailLocation);
       // console.log("people",this.$refs[people].data)
-
+      // var images = this.$refs.pushimg.imageList
       // 没有上传图片
       if (this.tmpimgdata.length == 0) {
 
@@ -539,9 +575,24 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
           icon: "warning" });
 
 
+      } else if (master.peoplephone.length < 11) {
+        this.$refs["toast"].open({
+          type: "warning",
+          message: "请填写正确的手机号码",
+          position: "middle",
+          icon: "warning" });
+
+
       } else {
         this.ifloading = true;
         this.loadingText = "发布中";
+
+        // 将图片上次到云存储
+
+        console.log('tmpdata', this.tmpimgdata);
+
+
+
         adopt.add({
           data: {
             cost: cat.cost,
@@ -551,7 +602,9 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
             adoptLocation: this.value2,
             adoptdetailLocation: this.detailLocation,
             // lostDate: this.lostdate,
-            // lostTime: this.losttime,
+            // lostTime: this.losttime,、
+            masterid: this.msaterid,
+            masterImg: this.masterImg,
             masterName: master.peoplename,
             masterPhone: master.peoplephone,
             masterWechat: master.peoplewechat,
@@ -598,42 +651,122 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var LbPicker = f
       }
     },
     updateImg: function updateImg(data) {var _this2 = this;
+      var that = this;
+      // console.log(data)
+      // console.log(this.$refs.pushimg.imageList)
+
+      // this.ifloading = true
+      // this.loadingText = "上传图片中..."
+      // 验证图片是否违规
+      data.currentImages.forEach(function (items) {
+        wx.cloud.uploadFile({
+          cloudPath: 'adopt/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
+          filePath: items // 小程序临时文件路径
+        }).
+
+        then(function (res) {
+          console.log('fileid', res);
+          _this2.tmpimgdata.push(res.fileID);
+          // this.ifloading = false
+
+        });
+      });
+      // this.ifloading = false
+      // data.currentImages.forEach(items => {
+      // 	console.log('item',items)
+
+
+      // 	wx.getFileSystemManager().readFile({
+      // 		filePath: items,
+      // 		success: res => {
+      // 			wx.cloud.callFunction({
+      // 				name: 'imgSecCheck',
+      // 				data:{
+      // 					img: res.data
+      // 				}
+      // 			}).then(res => {
+      // 				console.log('res',res )
+      // 				if (res.result.code == 200) {
+      // 					wx.cloud.uploadFile({
+      // 					  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
+      // 					  filePath: items, // 小程序临时文件路径
+
+      // 					})
+      // 					.then(res => {
+
+      // 						this.tmpimgdata.push(res.fileID)
+      // 						this.ifloading = false
+
+      // 					})
+      // 				} else if (res.result.code == 500) {
+      // 					that.ifloading = false
+      // 					let sonimglist = that.$refs.pushimg.imageList
+      // 					console.log(sonimglist.length-data.currentImages.length)
+      // 					console.log(sonimglist.slice(0,sonimglist.length-data.currentImages.length))
+      // 					that.$refs.pushimg.imageList = []
+      // 					// that.$refs.pushimg.imageList =  sonimglist.slice(0,sonimglist.length-data.currentImages.length)
+      // 					that.$refs["toast"].open({
+      // 						type: "warning",
+      // 						message: "内容含有违法违规内容",
+      // 						position: "middle",
+      // 						icon:"warning",
+      // 						// duration: 100000
+      // 						// type: 'warning'
+      // 					})
+      // 				}
+      // 			})
+      // 		}
+      // 	})
+      // })
+
       // console.log('/findCat/'+randomName()+'.png')
       // var tmpimgdata = []
-      this.ifloading = true;
-      this.loadingText = "上传图片中...";
-      console.log(data.currentImages.length);
-      for (var i = 0; i < data.currentImages.length; i++) {
-        console.log(i);
-        if (i == data.currentImages.length - 1) {
-          wx.cloud.uploadFile({
-            cloudPath: 'adopt/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
-            filePath: data.currentImages[i] // 小程序临时文件路径
-          }).
 
-          then(function (res) {
+      // console.log(data.currentImages.length)
+      // for (var i=0;i<data.currentImages.length;i++) {
+      // 	console.log(i)
+      // 	if (i == data.currentImages.length-1) {
+      // 		wx.cloud.uploadFile({
+      // 		  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
+      // 		  filePath: data.currentImages[i], // 小程序临时文件路径
 
-            _this2.tmpimgdata.push(res.fileID);
-            _this2.ifloading = false;
+      // 		})
+      // 		.then(res => {
 
-          });
-        } else {
-          wx.cloud.uploadFile({
-            cloudPath: 'findCat/' + (0, _randomName.default)() + '.png', // 上传至云端的路径
-            filePath: data.currentImages[i] // 小程序临时文件路径
-          }).
+      // 			this.tmpimgdata.push(res.fileID)
+      // 			this.ifloading = false
 
-          then(function (res) {
-            _this2.tmpimgdata.push(res.fileID);
-          });
-        }
+      // 		})
+      // 	} else {
+      // 		wx.cloud.uploadFile({
+      // 		  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+      // 		  filePath: data.currentImages[i], // 小程序临时文件路径
 
-      }
+      // 		})
+      // 		.then(res => {
+      // 			this.tmpimgdata.push(res.fileID)
+      // 		})
+      // 	}
+
+      // }
       // this.ifloading = true
 
       // this.imgs = data.allImages
 
 
+    },
+    deleteimg: function deleteimg(data) {
+      console.log('delete', data);
+      var fileid = this.tmpimgdata[data.imgindex];
+      console.log(fileid);
+      var x = [];
+      x.push(fileid);
+      this.tmpimgdata.splice(data.imgindex, 1);
+      wx.cloud.deleteFile({
+        fileList: x }).
+      then(function (res) {
+        console.log(res);
+      });
     },
     sexChange: function sexChange(e) {
       // console.log( e.detail.value)

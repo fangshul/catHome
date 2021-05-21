@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "cl-filter-bar": "/cl-uni/components/cl-filter-bar/cl-filter-bar",
+    "cl-filter-item": "/cl-uni/components/cl-filter-item/cl-filter-item",
+    "lb-picker": "/components/lb-picker/index"
+  }
+}

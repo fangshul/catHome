@@ -28,7 +28,12 @@ if (info == null || info == '' || info == undefined) {
   haveInfo = true;
 }
 
+
+
+
 _vue.default.prototype.$haveInfo = haveInfo;
+_vue.default.prototype.$province = '';
+_vue.default.prototype.$city = '';
 
 
 

@@ -22,7 +22,8 @@
 				</swiper-item>
 			</swiper>
 			<view class="title">
-				{{ location }} 的猫猫 {{ adoptdetail.petName }} 正在找家
+				
+				{{ location }} 的猫猫 <text style="color: #F4AE26;"> {{ adoptdetail.petName }} </text> 正在找家
 				<!-- 韶关市的猫猫宿舍正在找家 -->
 			</view>
 			<view class="info">
@@ -86,9 +87,12 @@
 			<view class="masterInfo" @click="gotoCenter">
 				<!-- <view > -->
 					<view>
-						<view 
+						<!-- <view 
 							class=" masterImg cu-avatar xl round margin-left" 
-							:style='"background-image:url("+ headimg +");"'>
+							:style='"background-image:url("+ headimg +");"'> -->
+						<view
+							class=" masterImg cu-avatar xl round margin-left" 
+							:style='"background-image:url("+ adoptdetail.masterImg +");"'>
 						</view>
 						<view class="mastername">
 							{{adoptdetail.masterName}}
@@ -331,8 +335,9 @@
 				console.log("3")
 			},
 			gotoCenter() {
+				console.log("master",this.adoptdetail.masterid)
 				uni.navigateTo({
-					url:'../personalCenter/personalCenter?id=' + this.adoptdetail._openid
+					url:'../personalCenter/personalCenter?id=' + this.adoptdetail.masterid
 				})
 			},
 			getLocation (data) {
@@ -349,24 +354,28 @@
 				// console.log("2")
 			},
 			async getimgurl () {
-				
-				for (var i=0;i<this.adoptdetail.imgList.length;i++) {
+				let that = this
+				for (var i=0;i<that.adoptdetail.imgList.length;i++) {
 					var url = await wx.cloud.downloadFile({
-									  fileID: this.adoptdetail.imgList[i], // 文件 ID
+									  fileID: that.adoptdetail.imgList[i], // 文件 ID
 									  
 									})
 									
 					this.imgs.push(url.tempFilePath)
 				}
+				console.log(that.adoptdetail._openid)
 				
-				db.collection('user').where({
-				  _openid: this.adoptdetail._openid
+				let himg = await db.collection('user').where({
+				  _openid: that.adoptdetail._openid
 				  
-				}).get({}).then(res => {
-					// console.log(res)
-					this.headimg = res.data[0].avatarUrl
-					console.log("4")
-				})
+				}).get()
+				
+				// console.log(headimg)
+				// .then(res => {
+				// 	console.log(res)
+					this.headimg = himg.data[0].avatarUrl
+				// 	console.log("4")
+				// })
 				
 				this.loading = false
 				// console.log("1")

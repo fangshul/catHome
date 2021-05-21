@@ -96,16 +96,16 @@ var components
 try {
   components = {
     clLoadingMask: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 200))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     },
     clGrid: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-grid/cl-grid */ "cl-uni/components/cl-grid/cl-grid").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-grid/cl-grid.vue */ 319))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-grid/cl-grid */ "cl-uni/components/cl-grid/cl-grid").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-grid/cl-grid.vue */ 327))
     },
     clGridItem: function() {
-      return Promise.all(/*! import() | cl-uni/components/cl-grid-item/cl-grid-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-grid-item/cl-grid-item")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-grid-item/cl-grid-item.vue */ 324))
+      return Promise.all(/*! import() | cl-uni/components/cl-grid-item/cl-grid-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-grid-item/cl-grid-item")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-grid-item/cl-grid-item.vue */ 332))
     },
     clButton: function() {
-      return __webpack_require__.e(/*! import() | cl-uni/components/cl-button/cl-button */ "cl-uni/components/cl-button/cl-button").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-button/cl-button.vue */ 329))
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-button/cl-button */ "cl-uni/components/cl-button/cl-button").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-button/cl-button.vue */ 337))
     }
   }
 } catch (e) {
@@ -300,8 +300,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 54));
+
+
+
+
+var _areaDataMin = _interopRequireDefault(__webpack_require__(/*! ../../static/area-data-min.js */ 49));
 var _cat = _interopRequireDefault(__webpack_require__(/*! @/static/cat.js */ 55));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
+//
+//
+//
 //
 //
 //
@@ -439,13 +447,9 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var _default = {
         value: 1 // 表单提交的值
       }, { label: '按时打疫苗', value: 2 }, { label: '同意适龄绝育', value: 3 }, { label: '不得遗弃、转让、贩卖、繁殖、虐待', value: 4 }, { label: '有防盗门，必须封网', value: 5 }, { label: '接受领养前家访，领养后回访', value: 6 }, { label: '家庭成员全员同意', value: 7 }, { label: '工作稳定，有一定经济基础', value: 8 }, { label: '文明养宠，科学喂养', value: 9 }, { label: '签订领养协议', value: 10 }, { label: '按时打疫苗', value: 11 }], costs: [{ label: '免费', // 展示的名称
         value: 1 // 表单提交的值
-      }, { label: '收押金', value: 2 }, { label: '收费', value: 3 }] };}, onShow: function onShow() {}, onLoad: function onLoad(option) {var _this = this;console.log("load");console.log(option);adopt.doc(option.id).get().then(function (res) {_this.adoptdetail = res.data;var views = _this.adoptdetail.viewed + 1;
-      adopt.doc(option.id).update({
-        // data 传入需要局部更新的数据
-        data: {
-          // 表示将 done 字段置为 true
+      }, { label: '收押金', value: 2 }, { label: '收费', value: 3 }] };}, onShow: function onShow() {}, onLoad: function onLoad(option) {var _this = this;console.log("load");console.log(option);adopt.doc(option.id).get().then(function (res) {_this.adoptdetail = res.data;var views = _this.adoptdetail.viewed + 1;adopt.doc(option.id).update({ // data 传入需要局部更新的数据
+        data: { // 表示将 done 字段置为 true
           viewed: views },
-
         success: function success(data) {
           console.log('update', data);
         } });
@@ -495,8 +499,9 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var _default = {
       console.log("3");
     },
     gotoCenter: function gotoCenter() {
+      console.log("master", this.adoptdetail.masterid);
       uni.navigateTo({
-        url: '../personalCenter/personalCenter?id=' + this.adoptdetail._openid });
+        url: '../personalCenter/personalCenter?id=' + this.adoptdetail.masterid });
 
     },
     getLocation: function getLocation(data) {
@@ -512,29 +517,33 @@ var db = wx.cloud.database();var adopt = db.collection('adopt');var _default = {
       }
       // console.log("2")
     },
-    getimgurl: function getimgurl() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var i, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-
-                i = 0;case 1:if (!(i < _this2.adoptdetail.imgList.length)) {_context.next = 9;break;}_context.next = 4;return (
+    getimgurl: function getimgurl() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, i, url, himg;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                that = _this2;
+                i = 0;case 2:if (!(i < that.adoptdetail.imgList.length)) {_context.next = 10;break;}_context.next = 5;return (
                   wx.cloud.downloadFile({
-                    fileID: _this2.adoptdetail.imgList[i] // 文件 ID
-                  }));case 4:url = _context.sent;
+                    fileID: that.adoptdetail.imgList[i] // 文件 ID
+                  }));case 5:url = _context.sent;
 
 
-                _this2.imgs.push(url.tempFilePath);case 6:i++;_context.next = 1;break;case 9:
+                _this2.imgs.push(url.tempFilePath);case 7:i++;_context.next = 2;break;case 10:
 
+                console.log(that.adoptdetail._openid);_context.next = 13;return (
 
-                db.collection('user').where({
-                  _openid: _this2.adoptdetail._openid }).
+                  db.collection('user').where({
+                    _openid: that.adoptdetail._openid }).
 
-                get({}).then(function (res) {
-                  // console.log(res)
-                  _this2.headimg = res.data[0].avatarUrl;
-                  console.log("4");
-                });
+                  get());case 13:himg = _context.sent;
+
+                // console.log(headimg)
+                // .then(res => {
+                // 	console.log(res)
+                _this2.headimg = himg.data[0].avatarUrl;
+                // 	console.log("4")
+                // })
 
                 _this2.loading = false;
                 // console.log("1")
-              case 11:case "end":return _context.stop();}}}, _callee);}))();} } };exports.default = _default;
+              case 16:case "end":return _context.stop();}}}, _callee);}))();} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -96,13 +96,19 @@ var components
 try {
   components = {
     yRefresh: function() {
-      return __webpack_require__.e(/*! import() | components/y-Refresh/y-Refresh */ "components/y-Refresh/y-Refresh").then(__webpack_require__.bind(null, /*! @/components/y-Refresh/y-Refresh.vue */ 224))
+      return __webpack_require__.e(/*! import() | components/y-Refresh/y-Refresh */ "components/y-Refresh/y-Refresh").then(__webpack_require__.bind(null, /*! @/components/y-Refresh/y-Refresh.vue */ 232))
     },
     yDiaryItem: function() {
-      return __webpack_require__.e(/*! import() | components/y-DiaryItem/y-DiaryItem */ "components/y-DiaryItem/y-DiaryItem").then(__webpack_require__.bind(null, /*! @/components/y-DiaryItem/y-DiaryItem.vue */ 231))
+      return __webpack_require__.e(/*! import() | components/y-DiaryItem/y-DiaryItem */ "components/y-DiaryItem/y-DiaryItem").then(__webpack_require__.bind(null, /*! @/components/y-DiaryItem/y-DiaryItem.vue */ 239))
     },
     yFab: function() {
-      return __webpack_require__.e(/*! import() | components/y-Fab/y-Fab */ "components/y-Fab/y-Fab").then(__webpack_require__.bind(null, /*! @/components/y-Fab/y-Fab.vue */ 238))
+      return __webpack_require__.e(/*! import() | components/y-Fab/y-Fab */ "components/y-Fab/y-Fab").then(__webpack_require__.bind(null, /*! @/components/y-Fab/y-Fab.vue */ 246))
+    },
+    clToast: function() {
+      return Promise.all(/*! import() | cl-uni/components/cl-toast/cl-toast */[__webpack_require__.e("common/vendor"), __webpack_require__.e("cl-uni/components/cl-toast/cl-toast")]).then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-toast/cl-toast.vue */ 253))
+    },
+    clLoadingMask: function() {
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
     }
   }
 } catch (e) {
@@ -193,6 +199,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 var db = wx.cloud.database();
 var forum = db.collection('forum');
@@ -211,6 +223,8 @@ var that;var _default =
   // },
   data: function data() {
     return {
+      // msg: false,
+      load: true,
       startNum: 0,
       activeTab: 0,
       // tab的名称
@@ -244,10 +258,22 @@ var that;var _default =
 
   },
   onShow: function onShow() {
+    this.load = true;
     this.alldata = [];
     that = this;
     // that.loadData('add');
-    that.getdata();
+    console.log('open', uni.getStorageSync('openid') == '');
+    if (uni.getStorageSync('openid') == undefined || uni.getStorageSync('openid') == '') {
+      this.load = false;
+      this.$refs["toast"].open({
+        message: "请先到 ‘我的’ 页面进行登陆",
+        position: "middle" });
+
+
+
+    } else {
+      that.getdata();
+    }
   },
   onLoad: function onLoad() {
 
@@ -260,7 +286,7 @@ var that;var _default =
 
   },
   methods: {
-    changelike: function changelike(data) {return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var likes, list, forumitem, i;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    changelike: function changelike(data) {return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var likes, list, forumitem, likelist, i;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 console.log(data);_context.next = 3;return (
                   db.collection('user').where({
                     _openid: uni.getStorageSync('openid') }).
@@ -268,7 +294,7 @@ var that;var _default =
 
                 list = likes.data[0].likeforum;
                 // 点击变为喜欢
-                if (!(data.islike == false)) {_context.next = 16;break;}
+                if (!(data.islike == false)) {_context.next = 19;break;}
 
 
                 list.push(data.id);
@@ -287,9 +313,13 @@ var that;var _default =
 
                   forum.doc(data.id).get());case 10:forumitem = _context.sent;
                 forumitem.data.like = data.likeforum;
+                likelist = forumitem.data.likes;
+                console.log(likelist);
+                likelist.push(uni.getStorageSync('openid'));
                 forum.doc(data.id).update({
                   data: {
-                    like: data.likenum + 1 },
+                    like: data.likenum + 1,
+                    likes: likelist },
 
                   success: function success(res) {
                     console.log(res);
@@ -297,7 +327,7 @@ var that;var _default =
 
                 console.log('item', forumitem);
                 // console.log(likes.data[0].likeforum)
-                _context.next = 20;break;case 16:
+                _context.next = 23;break;case 19:
                 // 点击变为不喜欢
                 for (i = 0; i < list.length; i++) {
                   if (data.id == list[i]) {
@@ -325,28 +355,28 @@ var that;var _default =
 
                   success: function success(res) {
                     console.log(res);
-                  } });case 20:case "end":return _context.stop();}}}, _callee);}))();
+                  } });case 23:case "end":return _context.stop();}}}, _callee);}))();
 
 
 
     },
     getdata: function getdata() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var forumdata, i, item, imgs, j, url, userinfo, myinfo, x;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
                   forum.orderBy('date', 'desc').get({}));case 2:forumdata = _context2.sent;
-
-                i = 0;case 4:if (!(i < forumdata.data.length)) {_context2.next = 45;break;}
+                console.log('a', forumdata);
+                i = 0;case 5:if (!(i < forumdata.data.length)) {_context2.next = 46;break;}
                 item = {};
                 item.id = forumdata.data[i]._id;
                 item.title = forumdata.data[i].content;
                 item.likeNum = forumdata.data[i].like;
                 imgs = [];
-                j = 0;case 11:if (!(j < forumdata.data[i].imgList.length)) {_context2.next = 19;break;}_context2.next = 14;return (
+                j = 0;case 12:if (!(j < forumdata.data[i].imgList.length)) {_context2.next = 20;break;}_context2.next = 15;return (
                   wx.cloud.downloadFile({
                     fileID: forumdata.data[i].imgList[j] // 文件 ID
-                  }));case 14:url = _context2.sent;
+                  }));case 15:url = _context2.sent;
 
 
                 imgs.push({
-                  url: url.tempFilePath });case 16:j++;_context2.next = 11;break;case 19:
+                  url: url.tempFilePath });case 17:j++;_context2.next = 12;break;case 20:
 
 
 
@@ -355,20 +385,20 @@ var that;var _default =
                 // item.createTime = forumdata.data[i].date
                 item.createTime = "".concat(forumdata.data[i].date.getMonth() + 1, "-").concat(forumdata.data[i].date.getDate());
                 console.log("commit", forumdata.data[i].comment);
-                item.commentNum = forumdata.data[i].comment.length;_context2.next = 25;return (
+                item.commentNum = forumdata.data[i].comment.length;_context2.next = 26;return (
 
                   db.collection('user').where({
                     _openid: forumdata.data[i]._openid }).
-                  get());case 25:userinfo = _context2.sent;
+                  get());case 26:userinfo = _context2.sent;
 
                 item.avatarUrl = userinfo.data[0].avatarUrl;
-                item.nickName = userinfo.data[0].name;_context2.next = 30;return (
+                item.nickName = userinfo.data[0].name;_context2.next = 31;return (
                   db.collection('user').where({
                     _openid: uni.getStorageSync('openid') }).
-                  get());case 30:myinfo = _context2.sent;
-                x = 0;case 32:if (!(x < myinfo.data[0].likeforum.length)) {_context2.next = 39;break;}if (!(
-                myinfo.data[0].likeforum == forumdata.data[i]._id)) {_context2.next = 36;break;}
-                item.isLike = true;return _context2.abrupt("break", 39);case 36:x++;_context2.next = 32;break;case 39:
+                  get());case 31:myinfo = _context2.sent;
+                x = 0;case 33:if (!(x < myinfo.data[0].likeforum.length)) {_context2.next = 40;break;}if (!(
+                myinfo.data[0].likeforum == forumdata.data[i]._id)) {_context2.next = 37;break;}
+                item.isLike = true;return _context2.abrupt("break", 40);case 37:x++;_context2.next = 33;break;case 40:
 
 
 
@@ -376,12 +406,14 @@ var that;var _default =
                   item.isLike = false;
                 }
                 console.log(item.isLike);
-                _this.alldata.push(item);case 42:i++;_context2.next = 4;break;case 45:
+                _this.alldata.push(item);case 43:i++;_context2.next = 5;break;case 46:
 
 
                 // alldata = forumdata.data
 
-                console.log(_this.alldata);case 46:case "end":return _context2.stop();}}}, _callee2);}))();
+                console.log(_this.alldata);
+                _this.load = false;
+                console.log(_this.load);case 49:case "end":return _context2.stop();}}}, _callee2);}))();
 
     },
     toDetails: function toDetails(id) {

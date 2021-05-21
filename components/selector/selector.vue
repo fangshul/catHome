@@ -140,7 +140,12 @@
 			};
 		},
 		mounted() {
-			
+			this.province = uni.getStorageSync('province')
+				this.city = uni.getStorageSync('city')
+			// console.log(uni.getStorageSync('city'))
+			// console.log(uni.getStorageSync('province'))
+			// uni.getStorageSync('city')
+			// uni.getStorageSync('province')
 			console.log(this.ifinfo)
 			for(var i=0;i<areaData.length;i++) {
 				if(areaData[i].label.indexOf(this.province)>-1) {
@@ -155,6 +160,8 @@
 				}
 				
 			}
+			
+			uni.setStorageSync('location',this.value2)
 			const info1 = this.$refs.picker2.getColumnsInfo(this.value2)
 			// const info2 = this.$refs.picker4.getColumnsInfo(this.value5)
 			console.log('根据value获取的信息：', info1)

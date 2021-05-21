@@ -1,9 +1,25 @@
 <template>
 	<view class="body">
 		<view class="addImg"  >
-			<robby-image-upload @add="updateImg" limit="6" :value="imageData"></robby-image-upload>
+			<!-- <cl-upload 
+				v-model="url" 
+				multiple 
+				:limit="6" 
+				@success="pushimgs"
+				>
+			</cl-upload> -->
+			<robby-image-upload 
+				ref="pushimg"
+				@delete = "deleteimg"
+				@add="updateImg" 
+				limit="6" 
+				:value="imageData">
+			</robby-image-upload>
 			<view class="addimgtext">添加图片</view>
-			<view class="addimgnode"><text class="cuIcon-info"></text>最多只能添加6张图片</view>
+			<view class="addimgnode">
+				<text class="cuIcon-info"></text>
+				最多只能添加6张图片
+			</view>
 		</view>
 		<view class="catform">
 			<cl-filter-bar @change="onChange">
@@ -88,6 +104,7 @@
 	export default {
 		data() {
 			return {
+				url: '',
 				value2: '',
 				peopleInfo: {
 					peoplename: '',
@@ -232,10 +249,10 @@
 								    label: '签订领养协议',
 								    value: 10
 								},
-								{
-								    label: '按时打疫苗',
-								    value: 11
-								}
+								// {
+								//     label: '按时打疫苗',
+								//     value: 11
+								// }
 						    ]
 						}],
 						showSubmitBtn: false, // 是否显示提交按钮
@@ -275,7 +292,8 @@
 							password: false, // 是否为密码输入框
 							placeholder: '请输入您的手机号', // 提示信息
 							disabled: false, // 是否禁用
-							maxLength: 11 // 最大输入长度
+							maxLength: 11, // 最大输入长度
+							
 						},
 						{
 							label: '微信', // 表单显示名称
@@ -294,7 +312,9 @@
 						    type: 'switch' // 表单项的类型 这里是开关类型
 						}
 					]
-				}
+				},
+				masterImg: '',
+				msaterid: ''
 			}
 		},
 		components: {
@@ -303,14 +323,30 @@
 			LbPicker
 		
 		},
+		onShow() {
+			this.catlist = catdata.slice(1)
+			var that = this
+			db.collection('user').where({
+			  _openid: uni.getStorageSync('openid')
+			  
+			}).get().then(res => {
+				console.log(res.data[0].avatarUrl)
+				
+				that.masterImg = res.data[0].avatarUrl
+				that.msaterid = res.data[0]._id
+			})
+		},
 		mounted() {
-			this.catlist = catdata.splice(1)
 		},
 		methods: {
+			// pushimgs (res) {
+			// 	console.log(res)
+			// },
 			onChange() {
 				
 			},
 			pushadopt () {
+				console.log(this.$refs.pushimg)
 				var cat = this.$refs.cat.data
 				var master = this.$refs.people.data
 				console.log("img",this.tmpimgdata)
@@ -320,7 +356,7 @@
 				console.log(this.value2)
 				console.log(this.detailLocation)
 				// console.log("people",this.$refs[people].data)
-				
+				// var images = this.$refs.pushimg.imageList
 				// 没有上传图片
 				if (this.tmpimgdata.length==0) {
 					
@@ -360,7 +396,7 @@
 						icon:"warning",
 						
 					})
-				} else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
+				}  else if (master.peoplename == "" || master.peoplephone == "" || master.peoplewechat == "") {
 					// 没有送养人信息
 					this.$refs["toast"].open({
 						type: "warning",
@@ -369,9 +405,24 @@
 						icon:"warning",
 						
 					})
+				} else if (master.peoplephone.length < 11) {
+					this.$refs["toast"].open({
+						type: "warning",
+						message: "请填写正确的手机号码",
+						position: "middle",
+						icon:"warning",
+						
+					})
 				} else {
 					this.ifloading = true
 					this.loadingText = "发布中"
+					
+					// 将图片上次到云存储
+					
+					console.log('tmpdata',this.tmpimgdata)
+					
+					
+					
 					adopt.add({
 						data:{
 							cost: cat.cost,
@@ -381,7 +432,9 @@
 							adoptLocation: this.value2,
 							adoptdetailLocation: this.detailLocation,
 							// lostDate: this.lostdate,
-							// lostTime: this.losttime,
+							// lostTime: this.losttime,、
+							masterid: this.msaterid,
+							masterImg:  this.masterImg,
 							masterName: master.peoplename,
 							masterPhone: master.peoplephone,
 							masterWechat: master.peoplewechat,
@@ -427,43 +480,123 @@
 					})
 				}
 			},
-			updateImg(data) {
+			 updateImg(data) {
+				let that = this
+				// console.log(data)
+				// console.log(this.$refs.pushimg.imageList)
+				
+				// this.ifloading = true
+				// this.loadingText = "上传图片中..."
+				// 验证图片是否违规
+				data.currentImages.forEach(items => {
+					wx.cloud.uploadFile({
+					  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
+					  filePath: items, // 小程序临时文件路径
+					 
+					})
+					.then(res => {
+						console.log('fileid',res)
+						this.tmpimgdata.push(res.fileID)
+						// this.ifloading = false
+						
+					})
+				})
+				// this.ifloading = false
+				// data.currentImages.forEach(items => {
+				// 	console.log('item',items)
+					
+					
+				// 	wx.getFileSystemManager().readFile({
+				// 		filePath: items,
+				// 		success: res => {
+				// 			wx.cloud.callFunction({
+				// 				name: 'imgSecCheck',
+				// 				data:{
+				// 					img: res.data
+				// 				}
+				// 			}).then(res => {
+				// 				console.log('res',res )
+				// 				if (res.result.code == 200) {
+				// 					wx.cloud.uploadFile({
+				// 					  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
+				// 					  filePath: items, // 小程序临时文件路径
+									 
+				// 					})
+				// 					.then(res => {
+										
+				// 						this.tmpimgdata.push(res.fileID)
+				// 						this.ifloading = false
+										
+				// 					})
+				// 				} else if (res.result.code == 500) {
+				// 					that.ifloading = false
+				// 					let sonimglist = that.$refs.pushimg.imageList
+				// 					console.log(sonimglist.length-data.currentImages.length)
+				// 					console.log(sonimglist.slice(0,sonimglist.length-data.currentImages.length))
+				// 					that.$refs.pushimg.imageList = []
+				// 					// that.$refs.pushimg.imageList =  sonimglist.slice(0,sonimglist.length-data.currentImages.length)
+				// 					that.$refs["toast"].open({
+				// 						type: "warning",
+				// 						message: "内容含有违法违规内容",
+				// 						position: "middle",
+				// 						icon:"warning",
+				// 						// duration: 100000
+				// 						// type: 'warning'
+				// 					})
+				// 				}
+				// 			})
+				// 		}
+				// 	})
+				// })
+				
 				// console.log('/findCat/'+randomName()+'.png')
 				// var tmpimgdata = []
-				this.ifloading = true
-				this.loadingText = "上传图片中..."
-				console.log(data.currentImages.length)
-				for (var i=0;i<data.currentImages.length;i++) {
-					console.log(i)
-					if (i == data.currentImages.length-1) {
-						wx.cloud.uploadFile({
-						  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
-						  filePath: data.currentImages[i], // 小程序临时文件路径
+				
+				// console.log(data.currentImages.length)
+				// for (var i=0;i<data.currentImages.length;i++) {
+				// 	console.log(i)
+				// 	if (i == data.currentImages.length-1) {
+				// 		wx.cloud.uploadFile({
+				// 		  cloudPath: 'adopt/'+randomName()+'.png', // 上传至云端的路径
+				// 		  filePath: data.currentImages[i], // 小程序临时文件路径
 						 
-						})
-						.then(res => {
+				// 		})
+				// 		.then(res => {
 							
-							this.tmpimgdata.push(res.fileID)
-							this.ifloading = false
+				// 			this.tmpimgdata.push(res.fileID)
+				// 			this.ifloading = false
 							
-						})
-					} else {
-						wx.cloud.uploadFile({
-						  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
-						  filePath: data.currentImages[i], // 小程序临时文件路径
+				// 		})
+				// 	} else {
+				// 		wx.cloud.uploadFile({
+				// 		  cloudPath: 'findCat/'+randomName()+'.png', // 上传至云端的路径
+				// 		  filePath: data.currentImages[i], // 小程序临时文件路径
 						 
-						})
-						.then(res => {
-							this.tmpimgdata.push(res.fileID)
-						})
-					}
+				// 		})
+				// 		.then(res => {
+				// 			this.tmpimgdata.push(res.fileID)
+				// 		})
+				// 	}
 					
-				}
+				// }
 				// this.ifloading = true
 				
 				// this.imgs = data.allImages
 				
 				
+			},
+			deleteimg(data) {
+				console.log('delete',data)
+				let fileid = this.tmpimgdata[data.imgindex]
+				console.log(fileid)
+				let x = []
+				x.push(fileid)
+				this.tmpimgdata.splice(data.imgindex, 1) 
+				wx.cloud.deleteFile({
+				  fileList:x
+				}).then(res=> {
+					console.log(res)
+				})
 			},
 			sexChange(e) {
 				// console.log( e.detail.value)

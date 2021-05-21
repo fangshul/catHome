@@ -79,8 +79,11 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
+    clLoadingMask: function() {
+      return __webpack_require__.e(/*! import() | cl-uni/components/cl-loading-mask/cl-loading-mask */ "cl-uni/components/cl-loading-mask/cl-loading-mask").then(__webpack_require__.bind(null, /*! @/cl-uni/components/cl-loading-mask/cl-loading-mask.vue */ 201))
+    },
     yEmpty: function() {
-      return __webpack_require__.e(/*! import() | components/y-Empty/y-Empty */ "components/y-Empty/y-Empty").then(__webpack_require__.bind(null, /*! @/components/y-Empty/y-Empty.vue */ 255))
+      return __webpack_require__.e(/*! import() | components/y-Empty/y-Empty */ "components/y-Empty/y-Empty").then(__webpack_require__.bind(null, /*! @/components/y-Empty/y-Empty.vue */ 263))
     }
   }
 } catch (e) {
@@ -215,6 +218,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 var db = wx.cloud.database();
 var forum = db.collection('forum');
@@ -222,6 +228,7 @@ var that;var _default =
 {
   data: function data() {
     return {
+      load: true,
       detailId: '',
       commentVal: '',
       current: 0,
@@ -267,8 +274,9 @@ var that;var _default =
   },
 
   methods: {
-    getdetail: function getdetail() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var forumitem, item, userinfo, imgs, j, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-                  forum.doc(_this.detailId).get({}));case 2:forumitem = _context.sent;
+    getdetail: function getdetail() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var forumitem, item, userinfo, imgs, j, url;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                _this.load = true;_context.next = 3;return (
+                  forum.doc(_this.detailId).get({}));case 3:forumitem = _context.sent;
 
 
 
@@ -277,24 +285,24 @@ var that;var _default =
                 // item.nickName = 
                 // item.avatarUrl = 
                 item.title = forumitem.data.content;
-                item.time = "".concat(forumitem.data.date.getMonth() + 1, "-").concat(forumitem.data.date.getDate());_context.next = 8;return (
-
+                item.time = "".concat(forumitem.data.date.getMonth() + 1, "-").concat(forumitem.data.date.getDate());
+                item.openid = forumitem.data._openid;_context.next = 10;return (
                   db.collection('user').where({
                     _openid: forumitem.data._openid }).
-                  get());case 8:userinfo = _context.sent;
+                  get());case 10:userinfo = _context.sent;
 
                 item.avatarUrl = userinfo.data[0].avatarUrl;
                 item.nickName = userinfo.data[0].name;
 
                 imgs = [];
-                j = 0;case 13:if (!(j < forumitem.data.imgList.length)) {_context.next = 21;break;}_context.next = 16;return (
+                j = 0;case 15:if (!(j < forumitem.data.imgList.length)) {_context.next = 23;break;}_context.next = 18;return (
                   wx.cloud.downloadFile({
                     fileID: forumitem.data.imgList[j] // 文件 ID
-                  }));case 16:url = _context.sent;
+                  }));case 18:url = _context.sent;
 
 
                 imgs.push({
-                  url: url.tempFilePath });case 18:j++;_context.next = 13;break;case 21:
+                  url: url.tempFilePath });case 20:j++;_context.next = 15;break;case 23:
 
 
 
@@ -302,8 +310,8 @@ var that;var _default =
                 item.imgList = imgs;
 
                 _this.detail = item;
-                _this.commentList = forumitem.data.comment;case 24:case "end":return _context.stop();}}}, _callee);}))();
-
+                _this.commentList = forumitem.data.comment;
+                _this.load = false;case 27:case "end":return _context.stop();}}}, _callee);}))();
     },
     ViewImage: function ViewImage(index, arr) {
       var list = [];
@@ -353,7 +361,7 @@ var that;var _default =
     },
     toOthers: function toOthers() {
       uni.navigateTo({
-        url: '../mine/other' });
+        url: '../personalCenter/personalCenter?id=' + this.detail.openid });
 
     }
     // handleFollow(id) {
