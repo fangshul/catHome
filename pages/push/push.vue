@@ -35,7 +35,7 @@
 <script>
 	const db = wx.cloud.database()
 	const forum = db.collection('forum')
-	
+	import api from '@/public/api/index.js'
 	import randomName from '../../static/randomName.js'
 	export default {
 		data() {
@@ -113,14 +113,12 @@
 				var imgfildid = []
 				console.log(this.imgList)
 				console.log(this.content)
+				
 				for (var i=0; i<this.imgList.length; i++) {
-					var imgurl = await wx.cloud.uploadFile({
-					  cloudPath: 'forum/'+randomName()+'.png', // 上传至云端的路径
-					  filePath: this.imgList[i], // 小程序临时文件路径
-					 
-					})
-					imgfildid.push(imgurl.fileID)
-					// console.log(imgurl)
+					let imgurl = await api.uploadImg(this.imgList[i])
+
+					imgfildid.push(imgurl.data)
+
 				}
 				
 				console.log(that.content)
@@ -144,9 +142,10 @@
 							inputText: that.content
 						},success (res) {
 							console.log('ok',res)
-							
-							forum.add({
-								data:{
+							uni.request({
+								url: 'http://localhost:3333/forum',
+								method: 'POST',
+								data: {
 									content: that.content,
 									viewed: 0,
 									imgList: imgfildid,
@@ -184,6 +183,45 @@
 									console.log(err)
 								}
 							})
+							// forum.add({
+							// 	data:{
+							// 		content: that.content,
+							// 		viewed: 0,
+							// 		imgList: imgfildid,
+							// 		date: new Date(),
+							// 		like: 0,
+							// 		comment : [],
+							// 		likes: []
+									
+							// 	},
+							// 	success: res => {
+							// 		that.ifloading = false
+									
+							// 		that.$refs["toast"].open({
+							// 			type: "success",
+							// 			message: "发布成功",
+							// 			position: "middle",
+							// 			icon:"success",
+										
+							// 		})
+							// 		uni.reLaunch({
+							// 			url: '../Forum/Forum'
+							// 		})
+									
+									
+							// 	},
+							// 	fail: err => {
+							// 		that.ifloading = false
+							// 		that.$refs["toast"].open({
+							// 			type: "error",
+							// 			message: "发布失败",
+							// 			position: "middle",
+							// 			icon:"error",
+										
+							// 		})
+							// 		console.log(err)
+							// 	}
+							// })
 						
 							
 						},fail (err) {

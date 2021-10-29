@@ -142,12 +142,24 @@
 				load: '',
 				title: 'Hello',
 				imgList: [{
-					url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3488207672,3352446836&fm=26&gp=0.jpg',
+					url: 'http://192.168.220.1:3333/images/headimg1.png',
 					id: 1
-				},{
-					url: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2653786338,2258592089&fm=26&gp=0.jpg',
-					id: 2
 				},
+				{
+					url: 'http://192.168.220.1:3333/images/headimg2.png',
+					id: 2
+				},{
+					url: 'http://192.168.220.1:3333/images/headimg3.jpg',
+					id: 3
+				}
+				// ,{
+				// 	url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3488207672,3352446836&fm=26&gp=0.jpg',
+				// 	id: 1
+				// },
+				// {
+				// 	url: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2653786338,2258592089&fm=26&gp=0.jpg',
+				// 	id: 2
+				// },
 				
 				],
 				findcat: [],
@@ -219,17 +231,28 @@
 			})
 			
 			// 轮播图
-			wx.cloud.downloadFile({
-			  fileID: 'cloud://cloud1-4grgkkd40c94fb6a.636c-cloud1-4grgkkd40c94fb6a-1305831904/lunbo.png',
-			   // 文件 ID
-			  success: res => {
-				  console.log(res.tempFilePath)
-				  this.imgList.push({
-					  url: res.tempFilePath,
-					  id: 3
-				  })
-			  }
-			})
+			// wx.cloud.downloadFile({
+			//   fileID: 'cloud://cloud1-4grgkkd40c94fb6a.636c-cloud1-4grgkkd40c94fb6a-1305831904/lunbo.png',
+			//    // 文件 ID
+			//   success: res => {
+			// 	  console.log(res.tempFilePath)
+			// 	  this.imgList.push({
+			// 		  url: res.tempFilePath,
+			// 		  id: 3
+			// 	  })
+			//   }
+			// })
+			// wx.cloud.downloadFile({
+			//   fileID: 'cloud://cloud1-4grgkkd40c94fb6a.636c-cloud1-4grgkkd40c94fb6a-1305831904/headimg2.png',
+			//    // 文件 ID
+			//   success: res => {
+			// 	  console.log(res.tempFilePath)
+			// 	  this.imgList.push({
+			// 		  url: res.tempFilePath,
+			// 		  id: 2
+			// 	  })
+			//   }
+			// })
 		},
 		methods: {
 			getLocation () {
