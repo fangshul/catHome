@@ -101,6 +101,7 @@
 	import VForm from '@/components/venus-form/v-form.vue'
 	import catdata from '../../static/cat.js'
 	import robbyImageUpload from '@/components/robby-image-upload/robby-image-upload.vue'
+	import api from '@/public/api/index.js'
 	export default {
 		data() {
 			return {
